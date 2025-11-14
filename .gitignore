@@ -1,10 +1,13 @@
 node_modules/
 dist/
 *.zip
+*.tar.gz
 vendor/
 backend-laravel.zip.zip
 *.sql
 recent_labels.json
+backend-dashboard.tar.gz
+frontend-dashboard.tar.gz
 
 # Environment files
 .env
