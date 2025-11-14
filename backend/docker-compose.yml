@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # 1. SERVIÇO DA API LARAVEL (PHP-FPM)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: laravel_app
+    restart: always
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor  # Volume anônimo - preserva vendor do container
+    working_dir: /var/www/html
+    environment:
+      # Variáveis de ambiente do Laravel
+      DB_CONNECTION: mysql
+      DB_HOST: mysql_db
+      DB_PORT: 3306
+      DB_DATABASE: aevolu38_appaevolua_db
+      DB_USERNAME: aevolu38_aevolua_user
+      DB_PASSWORD: "x_K~a)WDsSF%"
+      APP_KEY: base64:wwEmNrqTWK1aIOXdttYSEdqPIhPCwoMHey8I+izqpEQ=
+      APP_ENV: production
+      APP_DEBUG: "true"
+      APP_URL: https://suporteatostech.com
+      FRONTEND_URL: https://suporteatostech.com
+    depends_on:
+      - mysql_db
+
+  # 2. SERVIÇO DE BANCO DE DADOS (MYSQL)
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: aevolu38_appaevolua_db
+      MYSQL_USER: aevolu38_aevolua_user
+      MYSQL_PASSWORD: "x_K~a)WDsSF%"
+      MYSQL_ROOT_PASSWORD: "root_password_secure_123"
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # 3. SERVIDOR WEB (NGINX)
+  web:
+    image: nginx:latest
+    container_name: nginx_proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+      - mysql_db
+      
+volumes:
+  dbdata:

@@ -1,0 +1,46 @@
+              <thead>
+                  <TrLocal>
+                      <ThLocal className="assinante">Assinante</ThLocal>
+                        <ThLocal>Plano</ThLocal>
+                      <SortableHeader className="data"
+                      tabIndex={0}
+                      aria-sort={orderBy === 'subscription_date' ? (orderDir === 'asc' ? 'ascending' : 'descending') : 'none'}
+                      onClick={() => {
+                        if (orderBy !== 'subscription_date') {
+                          setOrderBy('subscription_date');
+                          setOrderDir('asc');
+                        } else if (orderDir === 'asc') {
+                          setOrderDir('desc');
+                        } else if (orderDir === 'desc') {
+                          setOrderBy('');
+                          setOrderDir('asc');
+                        } else {
+                          setOrderDir('asc');
+                        }
+                      }}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          if (orderBy !== 'subscription_date') {
+                            setOrderBy('subscription_date');
+                            setOrderDir('asc');
+                          } else if (orderDir === 'asc') {
+                            setOrderDir('desc');
+                          } else if (orderDir === 'desc') {
+                            setOrderBy('');
+                            setOrderDir('asc');
+                          } else {
+                            setOrderDir('asc');
+                          }
+                        }
+                      }}
+                      aria-label="Ordenar por data da assinatura"
+                    >
+                      DATA DA ASSINATURA
+                      {orderBy !== 'subscription_date' && <FaSort className="sort-icon" aria-hidden="true" />}
+                      {orderBy === 'subscription_date' && orderDir === 'asc' && <FaSortUp className="sort-icon" aria-hidden="true" />}
+                      {orderBy === 'subscription_date' && orderDir === 'desc' && <FaSortDown className="sort-icon" aria-hidden="true" />}
+                    </SortableHeader>
+                    <ThLocal>Status</ThLocal>\n                    <ThLocal className="acoes">Ações</ThLocal>
+                  </TrLocal>
+                </thead>

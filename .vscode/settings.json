@@ -1,0 +1,182 @@
+{
+    // =========================
+    // Configurações gerais do editor
+    // =========================
+    "editor.fontSize": 16,
+    "editor.fontFamily": "Fira Code",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorWidth": 3,
+    "editor.rulers": [
+        500
+    ],
+    "editor.wordWrapColumn": 500,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modifications",
+    "editor.fastScrollSensitivity": 7,
+    "editor.wordBasedSuggestions": "currentDocument",
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.snippetSuggestions": "inline",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.acceptSuggestionOnCommitCharacter": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "editor.autoClosingBrackets": "languageDefined",
+    "editor.autoClosingQuotes": "languageDefined",
+    "editor.autoSurround": "languageDefined",
+    "editor.tabCompletion": "on",
+    "editor.suggestSelection": "first",
+    // =========================
+    // Telemetria
+    // =========================
+    "telemetry.enableCrashReporter": true,
+    "telemetry.enableTelemetry": true,
+    "telemetry.feedback.enabled": true,
+    // =========================
+    // Configurações específicas para Dart
+    // =========================
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            94
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "allDocuments"
+    },
+    "dart.debugExternalPackageLibraries": true,
+    "dart.debugSdkLibraries": false,
+    // =========================
+    // Terminal integrado
+    // =========================
+    "terminal.integrated.profiles.windows": {
+        "PowerShell7": {
+            "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+            "source": "PowerShell"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell7",
+    "terminal.integrated.suggest.suggestOnTriggerCharacters": false,
+    "terminal.integrated.suggest.upArrowNavigatesHistory": false,
+    "terminal.integrated.suggest.showStatusBar": false,
+    "terminal.integrated.suggest.quickSuggestions": {
+        "commands": "on",
+        "arguments": "on",
+        "unknown": "off"
+    },
+    // =========================
+    // Interface e aparência
+    // =========================
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.settings.useSplitJSON": true,
+    // =========================
+    // Git & Diff
+    // =========================
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "git.openRepositoryInParentFolders": "never",
+    // =========================
+    // Segurança e permissões
+    // =========================
+    "security.workspace.trust.untrustedFiles": "open",
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    // =========================
+    // Outras configurações
+    // =========================
+    "settingsSync.ignoredSettings": [
+        "editor.fontFamily",
+        "workbench.colorCustomizations",
+        "editor.tokenColorCustomizations"
+    ],
+    "javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": false,
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    // =========================
+    // Plugin Path Intellisense / MCP
+    // =========================
+    "path-intellisense.absolutePathToWorkspace": false,
+    "mdb.mcp.server": "enabled",
+    // =================================================================
+    // Agent/Codex + auto-aprovação para React (Yarn) e Laravel (PHP)
+    // Opção A — “Quase sem prompts”, com trava nos comandos perigosos
+    // =================================================================
+    "chat.agent.enabled": true,
+    "chat.agent.maxRequests": 9999,
+    // Não auto-aplicar edições do modo Edit (você revisa antes)
+    "chat.editing.autoAcceptDelay": 0,
+    // NÃO liberar tudo globalmente (mantém proteções ativas)
+    "chat.tools.global.autoApprove": false,
+    // Regras de auto-aprovação no TERMINAL integrado
+    // true = auto-aprova | false = exige confirmação
+    "chat.tools.terminal.autoApprove": {
+        // --- Yarn / React ---
+        "/^yarn(\\s+install)?\\b/i": true,
+        "/^yarn\\s+(dev|build|start|preview|serve|test|lint)\\b/i": true,
+        // Vite (direto ou via scripts npm)
+        "/^vite(\\s+(dev|build|preview))?\\b/i": true,
+        "/^npm\\s+run\\s+(dev|build|start|preview|test|lint)\\b/i": true,
+        // Node (executar scripts locais)
+        "/^node\\b/i": true,
+        // --- PHP / Laravel (seguros) ---
+        "/^php\\s+artisan\\s+serve\\b/i": true,
+        "/^php\\s+artisan\\s+(route:list|route:cache|route:clear)\\b/i": true,
+        "/^php\\s+artisan\\s+(config:cache|config:clear)\\b/i": true,
+        "/^php\\s+artisan\\s+(cache:clear|view:clear)\\b/i": true,
+        "/^php\\s+artisan\\s+(optimize|optimize:clear)\\b/i": true,
+        "/^php\\s+artisan\\s+storage:link\\b/i": true,
+        // Composer (instalação/atualização/autoload)
+        "/^composer(\\s+install|\\s+update|\\s+dump-autoload)?\\b/i": true,
+        // --- Git (consultas seguras) ---
+        "/^git\\s+(status|log|diff|show|branch|remote)\\b/i": true,
+        // Git que ALTERA repo (pedir confirmação)
+        "/^git\\s+(add|commit|push|reset|revert|clean|merge|rebase)\\b/i": false,
+        // --- Laravel perigosos (pedir confirmação) ---
+        "/^php\\s+artisan\\s+(migrate(:fresh|:refresh)?|db:wipe|db:seed|tinker|down|up)\\b/i": false,
+        // --- Sistema perigosos (pedir confirmação) ---
+        "/^(rm|rmdir|del|Remove-Item)\\b/i": false,
+        "/^(chmod|chown|kill|curl|wget)\\b/i": false,
+        "/^powershell\\s+-Command\\s+Remove-Item\\b/i": false
+    },
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "local aevolua",
+            "username": "root",
+            "database": "local_aevolua",
+            "password": ""
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "local_aevolua",
+            "database": "local_aevolua",
+            "username": "root",
+            "password": ""
+        }
+    ]
+    ,
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow": "./.github/workflows/*"
+    }
+}

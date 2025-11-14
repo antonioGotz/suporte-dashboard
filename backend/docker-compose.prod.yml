@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aevolua_php:prod
+    container_name: aevolua_php
+    restart: always
+    volumes:
+      - .:/var/www/html:delegated
+    working_dir: /var/www/html
+    expose:
+      - "9000"
+    env_file:
+      - ./.env.docker
+
+  mysql:
+    image: mysql:8.0
+    container_name: aevolua_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    image: nginx:stable
+    container_name: aevolua_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/var/www/html:ro
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+    depends_on:
+      - php
+      - mysql
+
+  certbot:
+    image: certbot/certbot
+    container_name: aevolua_certbot
+    restart: "no"
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+    entrypoint: ""
+    command: 
+      - sh
+      - -c
+      - |
+        certbot certonly --webroot --webroot-path /var/www/certbot \
+          --agree-tos --no-eff-email --email ${LETSENCRYPT_EMAIL} \
+          -d suporteatostech.com -d www.suporteatostech.com || true
+
+volumes:
+  dbdata:
+  certbot-etc:
+  certbot-var:

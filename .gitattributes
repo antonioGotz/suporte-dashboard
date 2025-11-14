@@ -1,0 +1,26 @@
+* text=auto
+
+# Explicit eol rules for common script types
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# PowerShell files should keep CRLF on Windows
+*.ps1 text eol=crlf
+
+# Treat common binary types as binary (do not attempt normalization)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.jar binary
+
+# Ensure git does not try to normalize these folders/files
+frontend/public/** -text
+backend-laravel/public/** -text
+.vscode/** text

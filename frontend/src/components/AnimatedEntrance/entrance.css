@@ -1,0 +1,49 @@
+/* AnimatedEntrance CSS utility */
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(var(--anim-distance, 20px)); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-slide-down {
+  from { opacity: 0; transform: translateY(calc(var(--anim-distance, 20px) * -1)); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-slide-left {
+  from { opacity: 0; transform: translateX(var(--anim-distance, 20px)); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-slide-right {
+  from { opacity: 0; transform: translateX(calc(var(--anim-distance, 20px) * -1)); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animated-entrance {
+  --anim-duration: 600ms;
+  --anim-easing: ease-out;
+  --anim-distance: 20px;
+  --anim-delay: 0ms;
+  animation-duration: var(--anim-duration);
+  animation-timing-function: var(--anim-easing);
+  animation-fill-mode: both;
+  animation-delay: var(--anim-delay);
+  animation-name: fade-slide-up;
+}
+.animated-entrance--up { animation-name: fade-slide-up; }
+.animated-entrance--down { animation-name: fade-slide-down; }
+.animated-entrance--left { animation-name: fade-slide-left; }
+.animated-entrance--right { animation-name: fade-slide-right; }
+
+/* helper to explicitly disable animation via prop */
+.animated-entrance--noanim { animation: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-entrance {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* optional: quick utility classes */
+.animated-entrance--fast { --anim-duration: 240ms; }
+.animated-entrance--slow { --anim-duration: 900ms; }

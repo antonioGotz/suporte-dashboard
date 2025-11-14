@@ -1,0 +1,51 @@
+
+.message-editor-container {
+    border-radius: 8px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.message-editor-toolbar {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 8px;
+}
+
+.toolbar-button {
+    padding: 6px 8px;
+    margin-right: 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: transparent;
+    cursor: pointer;
+    color: inherit;
+}
+
+.toolbar-button.active {
+    background: rgba(111, 62, 248, 0.15);
+}
+
+.fallback-textarea-container {
+    border: 1px dashed rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.fallback-textarea {
+    width: 100%;
+    height: var(--message-editor-height, 300px); /* altura configurável via CSS var */
+    background: transparent;
+    color: inherit;
+    border: none;
+    resize: none;
+}
+
+/* Forçar altura fixa no editor rico (tiptap). Mantém rolagem interna. */
+.message-editor-container .ProseMirror {
+    min-height: var(--message-editor-height, 300px);
+    max-height: var(--message-editor-height, 300px);
+    overflow: auto;
+}

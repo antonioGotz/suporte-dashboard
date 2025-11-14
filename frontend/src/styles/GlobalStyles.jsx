@@ -1,0 +1,85 @@
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyles = createGlobalStyle`
+  :root {
+    --color-bg-dark:       #1A202C;
+    --color-bg-light:      #2D3748;
+    --color-sidebar-bg:    #294147;
+    --color-primary:       #38B2AC;
+    --color-accent:        #EC4899;
+    --color-text-light:    #F7FAFC;
+    --color-text-muted:    #A0AEC0;
+    --color-border:        #4A5568;
+    --color-red-danger:    #E53E3E;
+
+    --bg:        var(--color-bg-dark);
+    --bg-elev:   var(--color-bg-light);
+    --sidebar:   var(--color-sidebar-bg);
+    --card:      var(--color-bg-light);
+    --accent:    var(--color-primary);
+    --accent-d:  rgba(56,178,172,0.14);
+    --text:      var(--color-text-light);
+    --muted:     var(--color-text-muted);
+    --border:    rgba(148,163,184,0.18);
+
+    --radius: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body, #root { height: 100%; }
+
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--color-bg-dark);
+    color: var(--color-text-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: Poppins, Inter, sans-serif;
+    color: var(--color-text-light);
+    letter-spacing: .2px;
+    margin: 0 0 .5rem 0;
+  }
+
+  p { color: var(--color-text-muted); margin: 0; }
+
+  :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148,163,184,0.28);
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  /* Reset global leve */
+  a { color: inherit; text-decoration: none; background: transparent; border: 0; outline: none; }
+  a:hover, a:active, a:visited { color: inherit; text-decoration: none; }
+  ul, ol { list-style: none; margin: 0; padding: 0; }
+  li { margin: 0; padding: 0; }
+
+  /* Reset escopado para o Kanban */
+  .kanban-scope a {
+    all: unset;
+    display: block;
+    cursor: pointer;
+    color: inherit;
+  }
+  .kanban-scope a, .kanban-scope a * {
+    text-decoration: none !important;
+  }
+  .kanban-scope *, .kanban-scope *::before, .kanban-scope *::after {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .u-reset-link { all: unset; cursor: pointer; color: inherit; }
+  .u-reset-link, .u-reset-link * { text-decoration: none !important; }
+`;
+
+export default GlobalStyles;

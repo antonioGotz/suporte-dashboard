@@ -1,0 +1,112 @@
+\n          {currentTab === 'acoes' && (
+        <FilterContainer>
+          {counts && filterOrder.map(filterKey => {
+            const count = counts[filterKey] || 0;
+            const label = filterKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            if (counts[filterKey] !== undefined) {
+              return (
+                <FilterButton
+                  key={filterKey}
+                  isActive={activeFilter === filterKey}
+                  onClick={() => handleFilterClick(filterKey)}
+                  count={count}
+                >
+                  {label}
+                </FilterButton>
+              )
+            }
+            return null;
+          })}
+        </FilterContainer>
+          )}
+        </div>
+      }
+      pagination={
+        currentTab === 'acoes' && paginationInfo && paginationInfo.totalPages > 1 && (
+          <Pagination
+            currentPage={paginationInfo.currentPage}
+            totalPages={paginationInfo.totalPages}
+            onPageChange={handlePageChange}
+          />
+        )
+      }
+    >
+      {/* Tabelas por aba */}
+      {currentTab === 'acoes' && (loading ? <p>Carregando historico...</p> : error ? <p style={{ color: 'red' }}>{error}</p> : (
+        <Table>
+          <thead>
+            <Tr>
+              <Th>Data</Th>
+              <Th>Assinante Afetado</Th>
+              <Th>Acao</Th>
+              <Th>Motivo/Detalhe</Th>
+              <Th>Realizado Por</Th>
+            </Tr>
+          </thead>
+          <tbody>
+            {(() => {
+              const seen = new Set();
+              return logs.filter(log => {
+                if (!log.id || seen.has(log.id)) return false;
+                seen.add(log.id);
+                return true;
+              }).map((log, idx) => (
+                <Tr key={`hist-${log.id ?? idx}`}>
+                  <Td>{new Date(log.created_at).toLocaleString('pt-BR')}</Td>
+                  <Td>
+                    {log.subscriber_id ? (
+                      <Link to={`/assinantes/${log.subscriber_id}`} style={{ color: 'var(--color-text, #f8fafc)', fontWeight: 600, textDecoration: 'none' }} title={log.subscriber_name || 'Assinante'}>
+                        {log.subscriber_name || 'Assinante'}
+                      </Link>
+                    ) : (
+                      log.subscriber_name || 'N/A'
+                    )}
+                  </Td>
+                  <Td>{renderActionBadge(log)}</Td>
+                  <Td className="reason-cell">{log.reason || 'N/A'}</Td>
+                  <Td>{log.admin_name || 'Sistema'}</Td>
+                </Tr>
+              ));
+            })()}
+          </tbody>
+        </Table>
+      ))}
+
+      {currentTab === 'separacoes' && (
+        labelsLoading ? <p>Carregando separacoes...</p> : labelsError ? <p style={{ color: 'red' }}>{labelsError}</p> : (
+          <Table>
+            <thead>
+              <Tr>
+                <Th>Data</Th>
+                <Th>Pedido</Th>
+                <Th>Assinante</Th>
+                <Th>Plano</Th>
+                <Th>Status Etiqueta</Th>
+              </Tr>
+            </thead>
+            <tbody>
+              {(labels || []).map((row, idx) => (
+                <Tr key={`label-${row.id ?? idx}`}>
+                  <Td>{row.created_at ? new Date(row.created_at).toLocaleString('pt-BR') : '-'}</Td>
+                  <Td>{row.order_id || '-'}</Td>
+                  <Td>{row.subscriber_name || '-'}</Td>
+                  <Td>{row.plan_name || '-'}</Td>
+                  <Td>{row.label_status || '-'}</Td>
+                </Tr>
+              ))}
+            </tbody>
+          </Table>
+        )
+      )}
+    </ListPageLayout>
+  );
+};
+
+export default HistoricoPage;
+
+
+
+
+
+
+

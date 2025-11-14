@@ -1,0 +1,105 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { getHistorico, getHistoricoCounts } from '../services/historicoService';
+import Pagination from '../../../components/Pagination';
+import ListPageLayout from '../../../layouts/ListPageLayout'; // <-- Importa a "fôrma" da página
+import FilterButton, { FilterContainer } from '../../../components/FilterControls.jsx';
+// IMPORTANDO OS COMPONENTES DA NOSSA "FÔRMA DE TABELA"
+import { Table, Th, Td, Tr } from '../../../components/StandardTable.jsx';
+import { fetchRecentLabels } from '../../../services/shippingService';
+
+// --- ESTILOS QUE SÃO ÚNICOS DESTA PÁGINA ---
+const BaseBadge = styled.span` padding: 0.3rem 0.7rem; border-radius: 9999px; font-weight: 700; font-size: 0.7rem; color: #fff; text-transform: uppercase; `;
+const CreatedBadge = styled(BaseBadge)` background-color: #3182ce; `;
+const ReactivatedBadge = styled(BaseBadge)` background-color: #38A169; `;
+const SuspendedBadge = styled(BaseBadge)` background-color: #D69E2E; `;
+const CanceledBadge = styled(BaseBadge)` background-color: #E53E3E; `;
+const DefaultBadge = styled(BaseBadge)` background-color: #718096; `;
+// --- FIM DOS ESTILOS ---
+
+const Tabs = styled.div`
+  display: inline-flex;
+  border: 1px solid rgba(148,163,184,.2);
+  border-radius: 10px;
+  overflow: hidden;
+`;
+const TabBtn = styled.button`
+  padding: 8px 12px; border: 0; background: ${props => props.active ? 'rgba(148,163,184,.18)' : 'transparent'}; color: inherit; cursor: pointer;
+`;
+
+const HistoricoPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = (searchParams.get('tab') || 'acoes').toLowerCase();
+  const setTab = (tab) => setSearchParams(prev => { const p = new URLSearchParams(prev); p.set('tab', tab); return p; });
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [paginationInfo, setPaginationInfo] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilter, setActiveFilter] = useState('todos');
+  const [counts, setCounts] = useState(null);
+  const [labels, setLabels] = useState([]);
+  const [labelsLoading, setLabelsLoading] = useState(false);
+  const [labelsError, setLabelsError] = useState('');
+  const [labelsPage, setLabelsPage] = useState(1);
+  const [labelsPerPage] = useState(20);
+  const [labelsTotalPages, setLabelsTotalPages] = useState(1);
+  const [sepStatus, setSepStatus] = useState('');
+  const [sepStart, setSepStart] = useState('');
+  const [sepEnd, setSepEnd] = useState('');
+  const [sepQuery, setSepQuery] = useState('');
+  const [labelsRev, setLabelsRev] = useState(0);
+
+  // ... (toda a lógica de fetch e handlers continua a mesma)
+  const fetchHistorico = useCallback(async () => { setLoading(true); setError(''); try { const response = await getHistorico(currentPage, activeFilter); setLogs(response.data.data); setPaginationInfo({ currentPage: response.data.current_page, totalPages: response.data.last_page, }); } catch (err) { setError('Não foi possível carregar o histórico.'); console.error(err); } finally { setLoading(false); } }, [currentPage, activeFilter]);
+  useEffect(() => { getHistoricoCounts().then(response => { setCounts(response.data); }).catch(err => console.error("Erro ao buscar contadores:", err)); }, []);
+  useEffect(() => { if (currentTab === 'acoes') fetchHistorico(); }, [fetchHistorico, currentTab]);
+  useEffect(() => {
+    if (currentTab !== 'separacoes') return;
+    (async () => {
+      setLabelsLoading(true); setLabelsError('');
+      try {
+        const filters = {};
+        if (sepStatus) filters.status = sepStatus;
+        if (sepStart) filters.start_date = sepStart;
+        if (sepEnd) filters.end_date = sepEnd;
+        if (sepQuery) filters.q = sepQuery;
+        const res = await fetchRecentLabels(labelsPage, labelsPerPage, filters);
+        const payload = res?.data || {};
+        const items = Array.isArray(payload?.data) ? payload.data : (Array.isArray(payload) ? payload : []);
+        setLabels(items || []);
+        const lastPage = (payload?.meta?.last_page) || payload?.last_page || 1;
+        setLabelsTotalPages(Number(lastPage) || 1);
+      } catch (e) {
+        setLabelsError('Falha ao carregar separações.');
+      } finally {
+        setLabelsLoading(false);
+      }
+    })();
+  }, [currentTab, labelsPage, labelsPerPage, sepStatus, sepStart, sepEnd, sepQuery, labelsRev]);
+  const handlePageChange = (page) => { setCurrentPage(page); };
+  const handleFilterClick = (filter) => { setActiveFilter(filter); setCurrentPage(1); };
+  const renderActionBadge = (row) => {
+    const code = (row.status_code || '').toLowerCase();
+    const label = row.status_label || (row.action || '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    switch (code) {
+      case 'created':      return <CreatedBadge>{label}</CreatedBadge>;
+      case 'reactivated':  return <ReactivatedBadge>{label}</ReactivatedBadge>;
+      case 'suspended':    return <SuspendedBadge>{label}</SuspendedBadge>;
+      case 'canceled':     return <CanceledBadge>{label}</CanceledBadge>;
+      default:             return <DefaultBadge>{label}</DefaultBadge>;
+    }
+  };
+  const filterOrder = ['todos', 'criado', 'reativado', 'suspenso', 'cancelado', 'ajuste_estoque'];
+
+  return (
+    <ListPageLayout
+      title="Histórico"
+      description="Acompanhe ações administrativas e movimentações de separações."
+      filters={
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <Tabs role="tablist" aria-label="Historico">
+            <TabBtn active={currentTab === 'acoes'} onClick={() => setTab('acoes')} aria-selected={currentTab==='acoes'}>Acoes</TabBtn>
+            <TabBtn active={currentTab === 'separacoes'} onClick={() => setTab('separacoes')} aria-selected={currentTab==='separacoes'}>Separacoes</TabBtn>
+          </Tabs>

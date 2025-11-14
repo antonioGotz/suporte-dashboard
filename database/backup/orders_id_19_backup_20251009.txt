@@ -1,0 +1,17 @@
+Backup dos registros removidos da tabela orders (id = 19) em 09/10/2025:
+
+id: 19
+amount: 159.00
+status: active
+separation_status: Aguardando Separação
+users_id: 7
+products_id: 3
+gateway_id: NULL
+gateway_status: cancel
+token_card: NULL
+first_separation: 2023-06-28 00:05:20
+terms: NULL
+created_at: 2023-06-28 00:05:20
+updated_at: 2023-09-21 07:13:24
+
+Observação: Para restaurar, basta inserir novamente este registro na tabela orders.

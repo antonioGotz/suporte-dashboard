@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <base href="https://www.php.net/manual/pt_BR/index.php">
+  
+  <title>PHP: Manual do PHP - Manual</title>
+
+      <link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/fonts/Fira/fira.css" media="screen">
+      <link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+      <link rel="stylesheet" type="text/css" href="/cached.php?t=1759298403&amp;f=/styles/theme-base.css" media="screen">
+      <link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/styles/theme-medium.css" media="screen">
+  
+ <link rel="icon" type="image/svg+xml" sizes="any" href="https://www.php.net/favicon.svg?v=2">
+ <link rel="icon" type="image/png" sizes="196x196" href="https://www.php.net/favicon-196x196.png?v=2">
+ <link rel="icon" type="image/png" sizes="32x32" href="https://www.php.net/favicon-32x32.png?v=2">
+ <link rel="icon" type="image/png" sizes="16x16" href="https://www.php.net/favicon-16x16.png?v=2">
+ <link rel="shortcut icon" href="https://www.php.net/favicon.ico?v=2">
+
+ <link rel="search" type="application/opensearchdescription+xml" href="https://www.php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="https://www.php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="https://www.php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="https://www.php.net/manual/pt_BR/index.php">
+ <link rel="shorturl" href="https://www.php.net/manual/pt_BR/index.php">
+ <link rel="alternate" href="https://www.php.net/manual/pt_BR/index.php" hreflang="x-default">
+
+ <link rel="contents" href="https://www.php.net/manual/pt_BR/index.php">
+ <link rel="index" href="https://www.php.net/manual/pt_BR/">
+ <link rel="prev" href="https://www.php.net/manual/pt_BR/">
+ <link rel="next" href="https://www.php.net/manual/pt_BR/">
+
+ <link rel="alternate" href="https://www.php.net/manual/en/index.php" hreflang="en">
+ <link rel="alternate" href="https://www.php.net/manual/de/index.php" hreflang="de">
+ <link rel="alternate" href="https://www.php.net/manual/es/index.php" hreflang="es">
+ <link rel="alternate" href="https://www.php.net/manual/fr/index.php" hreflang="fr">
+ <link rel="alternate" href="https://www.php.net/manual/it/index.php" hreflang="it">
+ <link rel="alternate" href="https://www.php.net/manual/ja/index.php" hreflang="ja">
+ <link rel="alternate" href="https://www.php.net/manual/pt_BR/index.php" hreflang="pt_BR">
+ <link rel="alternate" href="https://www.php.net/manual/ru/index.php" hreflang="ru">
+ <link rel="alternate" href="https://www.php.net/manual/tr/index.php" hreflang="tr">
+ <link rel="alternate" href="https://www.php.net/manual/uk/index.php" hreflang="uk">
+ <link rel="alternate" href="https://www.php.net/manual/zh/index.php" hreflang="zh">
+
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1759298403&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1756715876&amp;f=/styles/theme-medium.css" media="screen">
+
+
+ <base href="https://www.php.net/manual/pt_BR/index.php">
+
+<meta name="Description" content="Manual do PHP" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@official_php" />
+<meta name="twitter:title" content="PHP: Manual do PHP - Manual" />
+<meta name="twitter:description" content="Manual do PHP" />
+<meta name="twitter:creator" content="@official_php" />
+<meta name="twitter:image:src" content="https://www.php.net/images/meta-image.png" />
+
+<meta itemprop="name" content="PHP: Manual do PHP - Manual" />
+<meta itemprop="description" content="Manual do PHP" />
+<meta itemprop="image" content="https://www.php.net/images/meta-image.png" />
+
+<meta property="og:image" content="https://www.php.net/images/meta-image.png" />
+<meta property="og:description" content="Manual do PHP" />
+
+<link href="https://fosstodon.org/@php" rel="me" />
+<!-- Matomo -->
+<script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(["setDoNotTrack", true]);
+    _paq.push(["disableCookies"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://analytics.php.net/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<!-- End Matomo Code -->
+</head>
+<body class="docs ">
+
+<nav class="navbar navbar-fixed-top">
+  <div class="navbar__inner">
+    <a href="/" aria-label="PHP Home" class="navbar__brand">
+      <img
+        src="/images/logos/php-logo-white.svg"
+        aria-hidden="true"
+        width="80"
+        height="40"
+      >
+    </a>
+
+    <div
+      id="navbar__offcanvas"
+      tabindex="-1"
+      class="navbar__offcanvas"
+      aria-label="Menu"
+    >
+      <button
+        id="navbar__close-button"
+        class="navbar__icon-item navbar_icon-item--visually-aligned navbar__close-button"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+
+      <ul class="navbar__nav">
+                            <li class="navbar__item">
+              <a
+                href="/downloads.php"
+                                class="navbar__link  "
+              >
+                                  Downloads                              </a>
+          </li>
+                            <li class="navbar__item">
+              <a
+                href="/docs.php"
+                aria-current="page"                class="navbar__link navbar__link--active "
+              >
+                                  Documentation                              </a>
+          </li>
+                            <li class="navbar__item">
+              <a
+                href="/get-involved.php"
+                                class="navbar__link  "
+              >
+                                  Get Involved                              </a>
+          </li>
+                            <li class="navbar__item">
+              <a
+                href="/support.php"
+                                class="navbar__link  "
+              >
+                                  Help                              </a>
+          </li>
+                            <li class="navbar__item">
+              <a
+                href="/releases/8.4/index.php"
+                                class="navbar__link  navbar__release"
+              >
+                                  <img src="/images/php8/logo_php8_4.svg" alt="PHP 8.4">
+                              </a>
+          </li>
+              </ul>
+    </div>
+
+    <div class="navbar__right">
+      
+      <!-- Desktop default search -->
+      <form
+        action="/manual-lookup.php"
+        class="navbar__search-form"
+      >
+        <label for="navbar__search-input" aria-label="Search docs">
+          <svg
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="11" cy="11" r="8"></circle>
+  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>        </label>
+        <input
+          type="search"
+          name="pattern"
+          id="navbar__search-input"
+          class="navbar__search-input"
+          placeholder="Search docs"
+          accesskey="s"
+        >
+        <input type="hidden" name="scope" value="quickref">
+      </form>
+
+      <!-- Desktop encanced search -->
+      <button
+        id="navbar__search-button"
+        class="navbar__search-button"
+        hidden
+      >
+        <svg
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="11" cy="11" r="8"></circle>
+  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>        Search docs
+      </button>
+
+      <!-- Mobile default items -->
+      <a
+        id="navbar__search-link"
+        href="/lookup-form.php"
+        aria-label="Search docs"
+        class="navbar__icon-item navbar__search-link"
+      >
+        <svg
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="11" cy="11" r="8"></circle>
+  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>      </a>
+      <a
+        id="navbar__menu-link"
+        href="/menu.php"
+        aria-label="Menu"
+        class="navbar__icon-item navbar_icon-item--visually-aligned navbar_menu-link"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+>
+  <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+</svg>      </a>
+
+      <!-- Mobile enhanced items -->
+      <button
+        id="navbar__search-button-mobile"
+        aria-label="Search docs"
+        class="navbar__icon-item navbar__search-button-mobile"
+        hidden
+      >
+        <svg
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="11" cy="11" r="8"></circle>
+  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>      </button>
+      <button
+        id="navbar__menu-button"
+        aria-label="Menu"
+        class="navbar__icon-item navbar_icon-item--visually-aligned"
+        hidden
+      >
+        <svg xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  width="24"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+>
+  <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+</svg>      </button>
+    </div>
+
+    <div
+      id="navbar__backdrop"
+      class="navbar__backdrop"
+    ></div>
+  </div>
+
+  <div id="flash-message"></div>
+</nav>
+<div class="headsup"><a href='/index.php#2025-10-09-2'>PHP 8.5.0 RC 2 available for testing</a></div>
+<nav id="trick"><div><dl>
+<dt><a href='/manual/en/getting-started.php'>Getting Started</a></dt>
+	<dd><a href='/manual/en/introduction.php'>Introduction</a></dd>
+	<dd><a href='/manual/en/tutorial.php'>A simple tutorial</a></dd>
+<dt><a href='/manual/en/langref.php'>Language Reference</a></dt>
+	<dd><a href='/manual/en/language.basic-syntax.php'>Basic syntax</a></dd>
+	<dd><a href='/manual/en/language.types.php'>Types</a></dd>
+	<dd><a href='/manual/en/language.variables.php'>Variables</a></dd>
+	<dd><a href='/manual/en/language.constants.php'>Constants</a></dd>
+	<dd><a href='/manual/en/language.expressions.php'>Expressions</a></dd>
+	<dd><a href='/manual/en/language.operators.php'>Operators</a></dd>
+	<dd><a href='/manual/en/language.control-structures.php'>Control Structures</a></dd>
+	<dd><a href='/manual/en/language.functions.php'>Functions</a></dd>
+	<dd><a href='/manual/en/language.oop5.php'>Classes and Objects</a></dd>
+	<dd><a href='/manual/en/language.namespaces.php'>Namespaces</a></dd>
+	<dd><a href='/manual/en/language.enumerations.php'>Enumerations</a></dd>
+	<dd><a href='/manual/en/language.errors.php'>Errors</a></dd>
+	<dd><a href='/manual/en/language.exceptions.php'>Exceptions</a></dd>
+	<dd><a href='/manual/en/language.fibers.php'>Fibers</a></dd>
+	<dd><a href='/manual/en/language.generators.php'>Generators</a></dd>
+	<dd><a href='/manual/en/language.attributes.php'>Attributes</a></dd>
+	<dd><a href='/manual/en/language.references.php'>References Explained</a></dd>
+	<dd><a href='/manual/en/reserved.variables.php'>Predefined Variables</a></dd>
+	<dd><a href='/manual/en/reserved.exceptions.php'>Predefined Exceptions</a></dd>
+	<dd><a href='/manual/en/reserved.interfaces.php'>Predefined Interfaces and Classes</a></dd>
+	<dd><a href='/manual/en/reserved.attributes.php'>Predefined Attributes</a></dd>
+	<dd><a href='/manual/en/context.php'>Context options and parameters</a></dd>
+	<dd><a href='/manual/en/wrappers.php'>Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href='/manual/en/security.php'>Security</a></dt>
+	<dd><a href='/manual/en/security.intro.php'>Introduction</a></dd>
+	<dd><a href='/manual/en/security.general.php'>General considerations</a></dd>
+	<dd><a href='/manual/en/security.cgi-bin.php'>Installed as CGI binary</a></dd>
+	<dd><a href='/manual/en/security.apache.php'>Installed as an Apache module</a></dd>
+	<dd><a href='/manual/en/security.sessions.php'>Session Security</a></dd>
+	<dd><a href='/manual/en/security.filesystem.php'>Filesystem Security</a></dd>
+	<dd><a href='/manual/en/security.database.php'>Database Security</a></dd>
+	<dd><a href='/manual/en/security.errors.php'>Error Reporting</a></dd>
+	<dd><a href='/manual/en/security.variables.php'>User Submitted Data</a></dd>
+	<dd><a href='/manual/en/security.hiding.php'>Hiding PHP</a></dd>
+	<dd><a href='/manual/en/security.current.php'>Keeping Current</a></dd>
+<dt><a href='/manual/en/features.php'>Features</a></dt>
+	<dd><a href='/manual/en/features.http-auth.php'>HTTP authentication with PHP</a></dd>
+	<dd><a href='/manual/en/features.cookies.php'>Cookies</a></dd>
+	<dd><a href='/manual/en/features.sessions.php'>Sessions</a></dd>
+	<dd><a href='/manual/en/features.file-upload.php'>Handling file uploads</a></dd>
+	<dd><a href='/manual/en/features.remote-files.php'>Using remote files</a></dd>
+	<dd><a href='/manual/en/features.connection-handling.php'>Connection handling</a></dd>
+	<dd><a href='/manual/en/features.persistent-connections.php'>Persistent Database Connections</a></dd>
+	<dd><a href='/manual/en/features.commandline.php'>Command line usage</a></dd>
+	<dd><a href='/manual/en/features.gc.php'>Garbage Collection</a></dd>
+	<dd><a href='/manual/en/features.dtrace.php'>DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href='/manual/en/funcref.php'>Function Reference</a></dt>
+	<dd><a href='/manual/en/refs.basic.php.php'>Affecting PHP's Behaviour</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.audio.php'>Audio Formats Manipulation</a></dd>
+	<dd><a href='/manual/en/refs.remote.auth.php'>Authentication Services</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.cmdline.php'>Command Line Specific Extensions</a></dd>
+	<dd><a href='/manual/en/refs.compression.php'>Compression and Archive Extensions</a></dd>
+	<dd><a href='/manual/en/refs.crypto.php'>Cryptography Extensions</a></dd>
+	<dd><a href='/manual/en/refs.database.php'>Database Extensions</a></dd>
+	<dd><a href='/manual/en/refs.calendar.php'>Date and Time Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.fileprocess.file.php'>File System Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.international.php'>Human Language and Character Encoding Support</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.image.php'>Image Processing and Generation</a></dd>
+	<dd><a href='/manual/en/refs.remote.mail.php'>Mail Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.math.php'>Mathematical Extensions</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.nontext.php'>Non-Text MIME Output</a></dd>
+	<dd><a href='/manual/en/refs.fileprocess.process.php'>Process Control Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.other.php'>Other Basic Extensions</a></dd>
+	<dd><a href='/manual/en/refs.remote.other.php'>Other Services</a></dd>
+	<dd><a href='/manual/en/refs.search.php'>Search Engine Extensions</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.server.php'>Server Specific Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.session.php'>Session Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.text.php'>Text Processing</a></dd>
+	<dd><a href='/manual/en/refs.basic.vartype.php'>Variable and Type Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.webservice.php'>Web Services</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.windows.php'>Windows Only Extensions</a></dd>
+	<dd><a href='/manual/en/refs.xml.php'>XML Manipulation</a></dd>
+	<dd><a href='/manual/en/refs.ui.php'>GUI Extensions</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+
+
+
+
+<div id="layout" class="clearfix">
+  <section id="layout-content">
+  <div class="page-tools">
+    <div class="change-language">
+      <form action="/manual/change.php" method="get" id="changelang" name="changelang">
+        <fieldset>
+          <label for="changelang-langs">Selecione a língua:</label>
+          <select onchange="document.changelang.submit()" name="page" id="changelang-langs">
+            <option value='en/index.php'>English</option>
+            <option value='de/index.php'>German</option>
+            <option value='es/index.php'>Spanish</option>
+            <option value='fr/index.php'>French</option>
+            <option value='it/index.php'>Italian</option>
+            <option value='ja/index.php'>Japanese</option>
+            <option value='pt_BR/index.php' selected="selected">Brazilian Portuguese</option>
+            <option value='ru/index.php'>Russian</option>
+            <option value='tr/index.php'>Turkish</option>
+            <option value='uk/index.php'>Ukrainian</option>
+            <option value='zh/index.php'>Chinese (Simplified)</option>
+            <option value='help-translate.php'>Other</option>
+          </select>
+        </fieldset>
+      </form>
+    </div>
+  </div><div id="index" class="set">
+ <h1 class="title">Manual do PHP</h1>
+ 
+
+
+ <div class="info">
+  
+  <div class="pubdate">2025-10-14</div>
+  
+
+  
+
+ </div>
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+<ul class="chunklist chunklist_set"><li><a href="copyright.php">Direitos Autorais</a></li><li><a href="preface.php">Pref&aacute;cio</a> — Sobre este manual</li><li><a href="getting-started.php">Come&ccedil;ando</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="introduction.php">Introdu&ccedil;&atilde;o</a> — O que &eacute; o PHP e o que ele pode fazer?</li><li><a href="tutorial.php">Um simples tutorial</a></li></ul></li><li><a href="install.php">Instala&ccedil;&atilde;o e Configura&ccedil;&atilde;o</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="install.general.php">Considera&ccedil;&otilde;es Gerais sobre Instala&ccedil;&atilde;o</a></li><li><a href="install.unix.php">Instala&ccedil;&atilde;o em sistemas Unix</a></li><li><a href="install.macosx.php">Instala&ccedil;&atilde;o no macOS</a></li><li><a href="install.windows.php">Instala&ccedil;&atilde;o em sistemas Windows</a></li><li><a href="install.cloud.php">Instala&ccedil;&atilde;o em Plataformas de Computa&ccedil;&atilde;o em Nuvem</a></li><li><a href="install.fpm.php">FastCGI Process Manager (FPM)</a></li><li><a href="install.pecl.php">Instala&ccedil;&atilde;o das extens&otilde;es PECL</a></li><li><a href="install.composer.intro.php">Introdu&ccedil;&atilde;o ao Composer</a></li><li><a href="install.pie.intro.php">Introdu&ccedil;&atilde;o ao PIE</a></li><li><a href="configuration.php">Configura&ccedil;&atilde;o em tempo de execu&ccedil;&atilde;o</a></li></ul></li><li><a href="langref.php">Refer&ecirc;ncia da Linguagem</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="language.basic-syntax.php">Sintaxe B&aacute;sica</a></li><li><a href="language.types.php">Tipos</a></li><li><a href="language.variables.php">Vari&aacute;veis</a></li><li><a href="language.constants.php">Constantes</a></li><li><a href="language.expressions.php">Express&otilde;es</a></li><li><a href="language.operators.php">Operadores</a></li><li><a href="language.control-structures.php">Estruturas de Controle</a></li><li><a href="language.functions.php">Fun&ccedil;&otilde;es</a></li><li><a href="language.oop5.php">Classes e Objetos</a></li><li><a href="language.namespaces.php">Namespaces</a></li><li><a href="language.enumerations.php">Enumera&ccedil;&otilde;es</a></li><li><a href="language.errors.php">Erros</a></li><li><a href="language.exceptions.php">Exce&ccedil;&otilde;es</a></li><li><a href="language.fibers.php">Fibers</a></li><li><a href="language.generators.php">Geradores</a></li><li><a href="language.attributes.php">Atributos</a></li><li><a href="language.references.php">Refer&ecirc;ncias</a></li><li><a href="reserved.variables.php">Vari&aacute;veis predefinidas</a></li><li><a href="reserved.exceptions.php">Exce&ccedil;&otilde;es predefinidas</a></li><li><a href="reserved.interfaces.php">Interfaces e Classes predefinidas</a></li><li><a href="reserved.attributes.php">Atributos Predefinidos</a></li><li><a href="context.php">Op&ccedil;&otilde;es e par&acirc;metros de contexto</a></li><li><a href="wrappers.php">Protocolos e empacotadores suportados</a></li></ul></li><li><a href="security.php">Seguran&ccedil;a</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="security.intro.php">Introdu&ccedil;&atilde;o</a></li><li><a href="security.general.php">Considera&ccedil;&otilde;es Gerais</a></li><li><a href="security.cgi-bin.php">Instalando como bin&aacute;rio CGI</a></li><li><a href="security.apache.php">Instalando como m&oacute;dulo do Apache</a></li><li><a href="security.sessions.php">Seguran&ccedil;a da Sess&atilde;o</a></li><li><a href="security.filesystem.php">Seguran&ccedil;a do Sistema de Arquivos</a></li><li><a href="security.database.php">Seguran&ccedil;a de Bancos de Dados</a></li><li><a href="security.errors.php">Relatando Erros</a></li><li><a href="security.variables.php">Dados Enviados pelo Usu&aacute;rio</a></li><li><a href="security.hiding.php">Escondendo o PHP</a></li><li><a href="security.current.php">Mantendo-se Atualizado</a></li></ul></li><li><a href="features.php">Caracter&iacute;sticas</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="features.http-auth.php">Autentica&ccedil;&atilde;o HTTP com PHP</a></li><li><a href="features.cookies.php">Cookies</a></li><li><a href="features.sessions.php">Sess&otilde;es</a></li><li><a href="features.file-upload.php">Gerenciamento de envio de arquivos</a></li><li><a href="features.remote-files.php">Usando arquivos remotos</a></li><li><a href="features.connection-handling.php">Tratamento de Conex&otilde;es</a></li><li><a href="features.persistent-connections.php">Conex&otilde;es Persistentes com o Banco de Dados</a></li><li><a href="features.commandline.php">Uso da linha de Comando</a> — Usando PHP a partir da linha de comando</li><li><a href="features.gc.php">Coletor de Lixo</a></li><li><a href="features.dtrace.php">Instrumenta&ccedil;&atilde;o din&acirc;mica DTrace</a></li></ul></li><li><a href="funcref.php">Refer&ecirc;ncia das Fun&ccedil;&otilde;es</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="refs.basic.php.php">Afetando o comportamento do PHP</a></li><li><a href="refs.utilspec.audio.php">Manipula&ccedil;&atilde;o de Formatos de &Aacute;udio</a></li><li><a href="refs.remote.auth.php">Servi&ccedil;os de Autentica&ccedil;&atilde;o</a></li><li><a href="refs.utilspec.cmdline.php">Extens&otilde;es Espec&iacute;ficas para Linha de Comando</a></li><li><a href="refs.compression.php">Extens&otilde;es de Arquivo e Compress&atilde;o</a></li><li><a href="refs.crypto.php">Extens&otilde;es para Criptografia</a></li><li><a href="refs.database.php">Extens&otilde;es de Banco de Dados</a></li><li><a href="refs.calendar.php">Extens&otilde;es Relacionadas a Data e Hor&aacute;rio</a></li><li><a href="refs.fileprocess.file.php">Extens&otilde;es Relacionadas a Sistema de Arquivo</a></li><li><a href="refs.international.php">Linguagem Humana e Suporte a Codifica&ccedil;&atilde;o de Caracteres</a></li><li><a href="refs.utilspec.image.php">Processamento e Gera&ccedil;&atilde;o de Imagem</a></li><li><a href="refs.remote.mail.php">Extens&otilde;es Relacionadas a Correio Eletr&ocirc;nico</a></li><li><a href="refs.math.php">Extens&otilde;es Matem&aacute;ticas</a></li><li><a href="refs.utilspec.nontext.php">Sa&iacute;da de MIME N&atilde;o-Texto</a></li><li><a href="refs.fileprocess.process.php">Extens&otilde;es para Controle de Processo</a></li><li><a href="refs.basic.other.php">Outras Extens&otilde;es B&aacute;sicas</a></li><li><a href="refs.remote.other.php">Outros Servi&ccedil;os</a></li><li><a href="refs.search.php">Extens&otilde;es de Motor de Busca</a></li><li><a href="refs.utilspec.server.php">Extens&otilde;es Espec&iacute;ficas para Servidor</a></li><li><a href="refs.basic.session.php">Extens&otilde;es de Sess&atilde;o</a></li><li><a href="refs.basic.text.php">Processamento de Texto</a></li><li><a href="refs.basic.vartype.php">Extens&otilde;es Relacionadas a Vari&aacute;veis e Tipos</a></li><li><a href="refs.webservice.php">Servi&ccedil;os para Web</a></li><li><a href="refs.utilspec.windows.php">Extens&otilde;es Somente para Windows</a></li><li><a href="refs.xml.php">Manipula&ccedil;&atilde;o de XML</a></li><li><a href="refs.ui.php">Extens&otilde;es GUI</a></li></ul></li><li><a href="faq.php">FAQ</a> — Perguntas Mais Frequentes<ul class="chunklist chunklist_set chunklist_children"><li><a href="faq.general.php">Informa&ccedil;&otilde;es Gerais</a></li><li><a href="faq.mailinglist.php">Listas de Discuss&atilde;o</a></li><li><a href="faq.obtaining.php">Obtendo o PHP</a></li><li><a href="faq.databases.php">Quest&otilde;es sobre banco de dados</a></li><li><a href="faq.installation.php">Instala&ccedil;&atilde;o</a></li><li><a href="faq.build.php">Problemas de Compila&ccedil;&atilde;o</a></li><li><a href="faq.using.php">Utilizando o PHP</a></li><li><a href="faq.passwords.php">Hash de senhas</a> — Gerando hash de senhas de forma segura</li><li><a href="faq.html.php">PHP e HTML</a></li><li><a href="faq.com.php">PHP e COM</a></li><li><a href="faq.misc.php">Quest&otilde;es Diversas</a></li></ul></li><li><a href="appendices.php">Ap&ecirc;ndices</a><ul class="chunklist chunklist_set chunklist_children"><li><a href="history.php">Hist&oacute;ria do PHP e Projetos Relacionados</a></li><li><a href="examples.php">Sobre os exemplos do manual</a></li><li><a href="migration84.php">Migrando do PHP 8.3.x para o PHP 8.4.x</a></li><li><a href="migration83.php">Migrando do PHP 8.2.x para o PHP 8.3.x</a></li><li><a href="migration82.php">Migrando do PHP 8.1.x para o PHP 8.2.x</a></li><li><a href="migration81.php">Migrando do PHP 8.0.x para o PHP 8.1.x</a></li><li><a href="migration80.php">Migrando do PHP 7.4.x para o PHP 8.0.x</a></li><li><a href="migration74.php">Migrando do PHP 7.3.x para o PHP 7.4.x</a></li><li><a href="migration73.php">Migrando do PHP 7.2.x para o PHP 7.3.x</a></li><li><a href="migration72.php">Migrando do PHP 7.1.x para o PHP 7.2.x</a></li><li><a href="migration71.php">Migrando do PHP 7.0.x para o PHP 7.1.x</a></li><li><a href="migration70.php">Migrando do PHP 5.6.x para o PHP 7.0.x</a></li><li><a href="migration56.php">Migrando do PHP 5.5.x para o PHP 5.6.x</a></li><li><a href="debugger.php">Depurando em PHP</a></li><li><a href="configure.php">Op&ccedil;&otilde;es do script Configure</a></li><li><a href="ini.php">Diretivas do php.ini</a></li><li><a href="extensions.php">Categoriza&ccedil;&atilde;o/Lista das Extens&otilde;es</a></li><li><a href="aliases.php">Lista de fun&ccedil;&otilde;es sin&ocirc;nimas</a></li><li><a href="reserved.php">Lista de Palavras Reservadas do PHP</a></li><li><a href="resource.php">Lista de tipos de recursos no PHP</a></li><li><a href="filters.php">Lista de Filtros Dispon&iacute;veis</a></li><li><a href="transports.php">Lista de Transportes via Soquete Suportados</a></li><li><a href="types.comparisons.php">Tabela de compara&ccedil;&otilde;es de tipos do PHP</a></li><li><a href="tokens.php">Lista de Tokens do Analisador</a></li><li><a href="userlandnaming.php">Guia de nomenclatura em espa&ccedil;o de usu&aacute;rio</a></li><li><a href="about.php">Sobre o manual</a></li><li><a href="cc.license.php">Creative Commons Attribution 3.0</a></li><li><a href="indexes.php">Lista de &iacute;ndices</a></li><li><a href="doc.changelog.php">Registro de Altera&ccedil;&otilde;es</a></li></ul></li></ul></div>    <div class="contribute">
+      <h3 class="title">Melhore Esta Página</h3>
+      <div>
+         
+      </div>
+      <div class="edit-bug">
+        <a href="https://github.com/php/doc-base/blob/master/README.md" title="Este atalho te leva ao nosso guia de contribuição no GitHub" target="_blank" rel="noopener noreferrer">Aprenda Como Melhorar Esta Página</a>
+        •
+        <a href="https://github.com/php/doc-base/blob/master/manual.xml">Envie uma Solicitação de Modificação</a>
+        •
+        <a href="https://github.com/php/doc-pt_br/issues/new?body=From%20manual%20page:%20https:%2F%2Fphp.net%2Findex%0A%0A---">Reporte um Problema</a>
+      </div>
+    </div><section id="usernotes">
+ <div class="head">
+  <span class="action"><a href="/manual/add-note.php?sect=index&amp;repo=pt_br&amp;redirect=https://www.php.net/manual/pt_BR/index.php">＋<small>adicionar nota</small></a></span>
+  <h3 class="title">Notas de Usuários </h3>
+ </div>
+ <div class="note">Não há notas de usuários para esta página.</div></section>    </section><!-- layout-content -->
+    
+
+  </div><!-- layout -->
+
+  <footer>
+    <div class="container footer-content">
+      <div class="row-fluid">
+      <ul class="footmenu">
+        <li><a href="/manual/pt_BR/copyright.php">Copyright &copy; 2001-2025 The PHP Documentation Group</a></li>
+        <li><a href="/my.php">My PHP.net</a></li>
+        <li><a href="/contact.php">Contact</a></li>
+        <li><a href="/sites.php">Other PHP.net sites</a></li>
+        <li><a href="/privacy.php">Privacy policy</a></li>
+      </ul>
+      </div>
+    </div>
+  </footer>
+
+    
+<script src="/cached.php?t=1756715876&amp;f=/js/ext/jquery-3.6.0.min.js"></script>
+<script src="/cached.php?t=1756715876&amp;f=/js/ext/FuzzySearch.min.js"></script>
+<script src="/cached.php?t=1756715876&amp;f=/js/ext/mousetrap.min.js"></script>
+<script src="/cached.php?t=1756715876&amp;f=/js/ext/jquery.scrollTo.min.js"></script>
+<script src="/cached.php?t=1756715876&amp;f=/js/search.js"></script>
+<script src="/cached.php?t=1756715876&amp;f=/js/common.js"></script>
+<script type="module" src="/cached.php?t=1759587603&amp;f=/js/interactive-examples.js"></script>
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="/images/to-top@2x.png"></a>
+
+<div id="search-modal__backdrop" class="search-modal__backdrop">
+  <div
+    role="dialog"
+    aria-label="Search modal"
+    id="search-modal"
+    class="search-modal"
+  >
+    <div class="search-modal__header">
+      <div class="search-modal__form">
+        <div class="search-modal__input-icon">
+          <!-- https://feathericons.com search -->
+          <svg xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            width="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <input
+          type="search"
+          id="search-modal__input"
+          class="search-modal__input"
+          placeholder="Search docs"
+          aria-label="Search docs"
+        />
+      </div>
+
+      <button aria-label="Close" class="search-modal__close">
+        <!-- https://pictogrammers.com/library/mdi/icon/close/ -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          width="24"
+          viewBox="0 0 24 24"
+        >
+          <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+        </svg>
+      </button>
+    </div>
+    <div
+      role="listbox"
+      aria-label="Search results"
+      id="search-modal__results"
+      class="search-modal__results"
+    ></div>
+    <div class="search-modal__helper-text">
+      <div>
+        <kbd>↑</kbd> and <kbd>↓</kbd> to navigate •
+        <kbd>Enter</kbd> to select •
+        <kbd>Esc</kbd> to close
+      </div>
+      <div>
+        Press <kbd>Enter</kbd> without
+        selection to search using Google
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

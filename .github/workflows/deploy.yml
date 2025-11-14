@@ -1,0 +1,217 @@
+name: 🚀 Deploy Produção
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐘 Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, bcmath, curl, zip, gd, mysql, intl, redis
+
+      - name: 🟢 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 📦 Install Backend Dependencies
+        working-directory: backend
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: 📦 Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: 🏗️ Build Frontend
+        working-directory: frontend
+        run: npm run build
+        env:
+          VITE_API_URL: https://${{ secrets.DOMAIN }}/api
+          VITE_STORAGE_BASE_URL: https://${{ secrets.DOMAIN }}/storage
+
+      - name: 📦 Package Backend
+        working-directory: backend
+        run: |
+          tar --exclude='vendor' \
+              --exclude='node_modules' \
+              --exclude='storage/logs/*.log' \
+              --exclude='.git' \
+              --exclude='.env' \
+              -czf ../backend-deploy.tar.gz .
+
+      - name: 📦 Package Frontend
+        working-directory: frontend/dist
+        run: tar -czf ../../frontend-deploy.tar.gz .
+
+      - name: 📤 Upload to Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "backend-deploy.tar.gz,frontend-deploy.tar.gz"
+          target: "/tmp/deploy-${{ github.run_id }}"
+
+      - name: 🚀 Deploy on Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            set -e
+            
+            DEPLOY_ID="${{ github.run_id }}"
+            PROJECT_PATH="${{ secrets.VPS_PATH }}"
+            DOMAIN="${{ secrets.DOMAIN }}"
+            
+            echo "🚀 Deploy #$DEPLOY_ID iniciado"
+            
+            BACKUP_DIR="/root/backups/$(date +%Y%m%d_%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+            
+            if [ -d "$PROJECT_PATH" ]; then
+              tar -czf "$BACKUP_DIR/project-backup.tar.gz" -C "$PROJECT_PATH" . 2>/dev/null || true
+            fi
+            
+            mysqldump -u ${{ secrets.DB_USERNAME }} -p'${{ secrets.DB_PASSWORD }}' \
+              ${{ secrets.DB_DATABASE }} > "$BACKUP_DIR/database-backup.sql" 2>/dev/null || true
+            
+            mkdir -p "$PROJECT_PATH"
+            cd "$PROJECT_PATH"
+            
+            if [ -f .env ]; then
+              cp .env /tmp/env-backup-$DEPLOY_ID
+            fi
+            
+            tar -xzf /tmp/deploy-$DEPLOY_ID/backend-deploy.tar.gz
+            
+            if [ -f /tmp/env-backup-$DEPLOY_ID ]; then
+              cp /tmp/env-backup-$DEPLOY_ID .env
+            else
+              cp .env.example .env
+              sed -i "s|APP_URL=.*|APP_URL=https://$DOMAIN|g" .env
+              sed -i "s|FRONTEND_URL=.*|FRONTEND_URL=https://$DOMAIN|g" .env
+              sed -i "s|SESSION_DOMAIN=.*|SESSION_DOMAIN=.suporteatostech.com|g" .env
+              sed -i "s|SANCTUM_STATEFUL_DOMAINS=.*|SANCTUM_STATEFUL_DOMAINS=$DOMAIN|g" .env
+              sed -i "s|CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=https://$DOMAIN|g" .env
+              sed -i "s|DB_DATABASE=.*|DB_DATABASE=${{ secrets.DB_DATABASE }}|g" .env
+              sed -i "s|DB_USERNAME=.*|DB_USERNAME=${{ secrets.DB_USERNAME }}|g" .env
+              sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${{ secrets.DB_PASSWORD }}|g" .env
+              sed -i "s|APP_DEBUG=.*|APP_DEBUG=false|g" .env
+              sed -i "s|SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=true|g" .env
+            fi
+            
+            composer install --no-dev --optimize-autoloader --no-interaction
+            
+            mkdir -p storage/framework/{sessions,views,cache}
+            mkdir -p storage/logs
+            mkdir -p bootstrap/cache
+            
+            if ! grep -q "APP_KEY=base64:" .env; then
+              php artisan key:generate --force
+            fi
+            
+            chown -R www-data:www-data storage bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
+            
+            cd public
+            
+            if [ -f index.php ]; then
+              cp index.php /tmp/index.php.bak-$DEPLOY_ID
+            fi
+            
+            find . -mindepth 1 ! -name 'index.php' -delete 2>/dev/null || true
+            
+            tar -xzf /tmp/deploy-$DEPLOY_ID/frontend-deploy.tar.gz
+            
+            if [ -f index.html ]; then
+              echo "✅ index.html encontrado"
+            elif [ -f index.react.html ]; then
+              ln -sf index.react.html index.html
+            else
+              echo "❌ ERRO: index.html não encontrado!"
+              exit 1
+            fi
+            
+            if [ -f /tmp/index.php.bak-$DEPLOY_ID ]; then
+              cp /tmp/index.php.bak-$DEPLOY_ID index.php
+            fi
+            
+            cd "$PROJECT_PATH"
+            chown -R www-data:www-data public
+            
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan route:clear
+            php artisan view:clear
+            
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            if [ ! -L public/storage ]; then
+              php artisan storage:link
+            fi
+            
+            systemctl restart php8.3-fpm
+            systemctl restart nginx
+            
+            rm -rf /tmp/deploy-$DEPLOY_ID
+            rm -f /tmp/env-backup-$DEPLOY_ID
+            rm -f /tmp/index.php.bak-$DEPLOY_ID
+            
+            echo "✅ Deploy concluído!"
+
+      - name: ✅ Verify Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            PROJECT_PATH="${{ secrets.VPS_PATH }}"
+            
+            if [ -f "$PROJECT_PATH/public/index.html" ]; then
+              echo "✅ Frontend: OK"
+            else
+              echo "❌ Frontend: index.html não encontrado"
+              exit 1
+            fi
+            
+            if [ -f "$PROJECT_PATH/artisan" ]; then
+              echo "✅ Backend: OK"
+            else
+              echo "❌ Backend: artisan não encontrado"
+              exit 1
+            fi
+            
+            if systemctl is-active --quiet nginx; then
+              echo "✅ Nginx: Rodando"
+            else
+              echo "❌ Nginx: Parado"
+              exit 1
+            fi
+            
+            if systemctl is-active --quiet php8.3-fpm; then
+              echo "✅ PHP-FPM: Rodando"
+            else
+              echo "❌ PHP-FPM: Parado"
+              exit 1
+            fi
+            
+            echo "🎉 Todos os serviços operacionais!"

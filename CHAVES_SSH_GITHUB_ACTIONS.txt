@@ -1,0 +1,157 @@
+═══════════════════════════════════════════════════════════════════════
+  CHAVES SSH GERADAS PARA GITHUB ACTIONS - AEvolua
+  ⚠️ CHAVE SEM PASSPHRASE (CORRIGIDA)
+═══════════════════════════════════════════════════════════════════════
+
+✅ Chaves geradas com sucesso!
+Localização: C:\Users\Augusto\.ssh\github_actions_deploy
+⚠️ IMPORTANTE: Esta chave NÃO tem passphrase - pronta para GitHub Actions
+
+═══════════════════════════════════════════════════════════════════════
+  PASSO 1: ADICIONAR CHAVE PÚBLICA NO cPanel
+═══════════════════════════════════════════════════════════════════════
+
+1. Acesse seu cPanel
+2. Vá em "SSH Access" ou "Acesso SSH"
+3. Clique em "Manage SSH Keys" ou "Gerenciar Chaves SSH"
+4. Se já adicionou a chave anterior, REMOVA e adicione esta NOVA
+5. Clique em "Import Key" ou "Importar Chave"
+6. Cole a chave pública abaixo (copie TUDO, incluindo "ssh-rsa" no início):
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAVE PÚBLICA NOVA (copie tudo abaixo):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV/sVBG33789LQZYWaSAhpmTIeRCxjoagAyNBGQvPBM6fXBRcMjMr9YrUaXHBdUsMx/RPRnVGo9EwpzBfnIf4kXs/JdHIJT2/q80ELZfpmkEa2G9EC6qWRzaic6RXj9zfNI9C1xZ1tqw2zeh9dSokG0SQ/LrIMSYFbTPYE8FJw2Xdt5XpTFMp8i8XJRcFt3iMYlUl2cwYQH4kPJnvRtKUd9tgM3oUaXAr+YHq5zrg5C30nu+++axd725mJW9miG8Yll47ldwXStvI/kxPhxmvCjlb0yjprirxYbqSJ/mocty/EAY6LEdHW19i5XSvtmZROqwkDkHRvfox92R/4WvYrUOaoS6XQDHhTuSzw2QaMeTsuhB1LZLuq5wA4fa49Hsvzj2GZ8pQGwLsTPGIXCR77/l7hERkqC+FhkTyTwwXNx3/2uuNyWlTt3jAoo0an2+hpQloBAril/B+yvTVtqCmUDZXpfWs8uhkSsMrzgH4SRT+eP/LSS5nHur5F9EywEqYUjZCZL3w7gvlZtlNcu6MsoIESIfZF2eEKpoS+nWQpLsTVVcYITcjU3LkhN6XWZ6tTADj6C9NtM8KKF3jyBVex/CuwrBRpElROzmnMyuv6cFT6FEmG1kei3hT2tSLsoTjXWCv8932d+6L3y2gb5K/nMxIJvoRM5vnETjmJRT5n1Q== github-actions-deploy-aevolua
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+7. Após colar, clique em "Save" ou "Salvar"
+8. IMPORTANTE: Clique em "Authorize" ou "Autorizar" na chave importada
+
+═══════════════════════════════════════════════════════════════════════
+  PASSO 2: ADICIONAR SECRETS NO GITHUB
+═══════════════════════════════════════════════════════════════════════
+
+1. Acesse: https://github.com/antonioGotz/app-aevolua/settings/secrets/actions
+
+2. Se já configurou SSH_PRIVATE_KEY antes, DELETE e adicione a NOVA abaixo
+
+3. Para cada secret abaixo, clique em "New repository secret":
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECRET 1: SSH_HOST
+Nome: SSH_HOST
+Valor: 50.6.138.114
+(ou use o hostname do servidor se preferir)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECRET 2: SSH_USERNAME
+Nome: SSH_USERNAME
+Valor: aevolu38
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECRET 3: SSH_PORT (OPCIONAL)
+Nome: SSH_PORT
+Valor: 22
+(Se não configurar, usará 22 automaticamente)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECRET 4: SSH_PRIVATE_KEY ⚠️ MAIS IMPORTANTE - NOVA CHAVE SEM PASSPHRASE
+Nome: SSH_PRIVATE_KEY
+Valor: (Cole a chave privada abaixo - COPIE TUDO, incluindo BEGIN e END)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAVE PRIVADA NOVA (copie TUDO abaixo, incluindo as linhas BEGIN e END):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ IMPORTANTE: 
+- Copie a chave privada COMPLETA (incluindo as linhas BEGIN e END)
+- Não adicione espaços ou quebras de linha extras
+- Mantenha o formato exato
+- Esta chave NÃO tem passphrase - funciona no GitHub Actions
+
+═══════════════════════════════════════════════════════════════════════
+  RESUMO DOS SECRETS PARA GITHUB
+═══════════════════════════════════════════════════════════════════════
+
+SSH_HOST = 50.6.138.114
+SSH_USERNAME = aevolu38
+SSH_PORT = 22 (opcional)
+SSH_PRIVATE_KEY = (chave privada completa acima - SEM PASSPHRASE)
+
+═══════════════════════════════════════════════════════════════════════
+  PRÓXIMOS PASSOS
+═══════════════════════════════════════════════════════════════════════
+
+1. ✅ REMOVA a chave pública antiga do cPanel e adicione a NOVA
+2. ✅ DELETE o secret SSH_PRIVATE_KEY no GitHub e adicione a NOVA
+3. ✅ Os workflows já foram corrigidos (vite build e chave sem passphrase)
+4. ✅ Faça um push para a branch main (ou aguarde o próximo push)
+5. ✅ Vá em Actions no GitHub para ver o workflow executando
+
+═══════════════════════════════════════════════════════════════════════
+
+⚠️ SEGURANÇA: 
+- Este arquivo contém sua chave privada - MANTENHA-O SEGURO
+- Após configurar tudo, você pode excluir este arquivo
+- As chaves estão salvas em: C:\Users\Augusto\.ssh\github_actions_deploy
+- A nova chave NÃO tem passphrase - configurada para GitHub Actions
+
+═══════════════════════════════════════════════════════════════════════

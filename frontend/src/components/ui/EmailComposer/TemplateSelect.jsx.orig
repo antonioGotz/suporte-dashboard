@@ -1,0 +1,76 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Field, Label, HoverControl } from './EmailComposer.styles';
+
+const SelectWrapper = styled.div`
+  position: relative;
+  display: block;
+  width: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid rgba(255,255,255,0.9);
+    pointer-events: none;
+    opacity: 0.9;
+  }
+`;
+
+const NativeSelect = styled.select`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: 10px 40px 10px 12px; /* espaço para ícone à direita */
+  border-radius: 8px;
+  background: var(--surface-1);
+  color: inherit;
+  border: 1px solid var(--surface-2);
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--ring);
+    border-color: transparent;
+  }
+
+  option[disabled] {
+    color: var(--text-muted);
+  }
+`;
+
+const TemplateSelect = ({ value = null, onChange, templates = [] }) => {
+  const handleChange = (e) => {
+    const id = e.target.value || null;
+    const tpl = id ? templates.find((t) => String(t.id) === String(id)) : null;
+    if (onChange) onChange(tpl);
+  };
+
+  return (
+    <Field>
+      <Label>Template de Mensagem</Label>
+      <HoverControl>
+        <SelectWrapper>
+          <NativeSelect onChange={handleChange} value={value ? value.id : ''}>
+            <option value="" disabled>{'Selecione um template...'}</option>
+            {templates.map((t) => (
+              <option key={t.id} value={t.id}>{t.name}</option>
+            ))}
+          </NativeSelect>
+        </SelectWrapper>
+      </HoverControl>
+    </Field>
+  );
+};
+
+export default TemplateSelect;
