@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\TransientToken;
 
@@ -62,20 +64,36 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        /** @var User|null $user */
-        $user = $request->user();
+        // Fazer logout do usuário (guard web)
+        Auth::guard('web')->logout();
 
-        if ($user) {
-            $token = $user->currentAccessToken();
+        // Invalidar sessão atual
+        $request->session()->invalidate();
 
-            if ($token instanceof PersonalAccessToken) {
-                $token->delete();
-            } elseif (!($token instanceof TransientToken) && $token !== null) {
-                // Fallback: remove todos os tokens associados caso o atual não seja detectado.
-                $user->tokens()->delete();
+        // Regenerar token CSRF
+        $request->session()->regenerateToken();
+
+        // 🔥 LIMPAR TODOS OS COOKIES DO DOMÍNIO
+        $cookies = [
+            'laravel_session',
+            'XSRF-TOKEN',
+            config('session.cookie'),
+        ];
+
+        foreach ($cookies as $cookie) {
+            Cookie::queue(Cookie::forget($cookie));
+        }
+
+        // Limpar cookies adicionais que possam existir
+        foreach ($request->cookies->all() as $name => $value) {
+            if (str_starts_with($name, 'laravel_') || str_starts_with($name, 'XSRF-')) {
+                Cookie::queue(Cookie::forget($name));
             }
         }
 
-        return response()->json(['message' => 'Logout realizado.']);
+        return response()->json([
+            'message' => 'Logout realizado com sucesso'
+        ])->withoutCookie('laravel_session')
+            ->withoutCookie('XSRF-TOKEN');
     }
 }

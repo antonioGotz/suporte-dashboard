@@ -161,6 +161,24 @@ api.interceptors.response.use(
         window.location.href = '/forbidden';
       }
     }
+    // Interceptor para limpar cookies em caso de erro 400
+    if (status === 400) {
+      try {
+        console.warn('Erro 400 detectado. Limpando cookies antigas...');
+        if (typeof document !== 'undefined') {
+          document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+              .replace(/^ +/, "")
+              .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+          });
+        }
+      } catch (e) {
+        // noop
+      }
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+    }
     return Promise.reject(error);
   }
 );

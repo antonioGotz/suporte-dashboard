@@ -56,9 +56,20 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error("Erro ao fazer logout na API:", error);
         } finally {
+            // 🔥 LIMPAR TODOS OS COOKIES DO NAVEGADOR
             try {
-                localStorage.removeItem('authToken');
-            } catch { /* noop */ }
+                if (typeof document !== 'undefined') {
+                    document.cookie.split(";").forEach((c) => {
+                        document.cookie = c
+                            .replace(/^ +/, "")
+                            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                    });
+                }
+            } catch (e) { /* noop */ }
+
+            // Limpar storage local e de sessão
+            try { if (typeof window !== 'undefined') { localStorage.clear(); sessionStorage.clear(); } } catch { /* noop */ }
+
             setUser(null);
             navigate('/login', { replace: true });
         }

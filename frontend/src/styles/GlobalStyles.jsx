@@ -17,10 +17,10 @@ const GlobalStyles = createGlobalStyle`
     --sidebar:   var(--color-sidebar-bg);
     --card:      var(--color-bg-light);
     --accent:    var(--color-primary);
-    --accent-d:  rgba(56,178,172,0.14);
+    --accent-d:  rgba(56,178,172,0.45);
     --text:      var(--color-text-light);
     --muted:     var(--color-text-muted);
-    --border:    rgba(148,163,184,0.18);
+    --border:    rgba(148,163,184,0.40);
 
     --radius: 16px;
   }
@@ -51,7 +51,7 @@ const GlobalStyles = createGlobalStyle`
 
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(148,163,184,0.28);
+    background: rgba(148,163,184,0.40);
     border-radius: 12px;
     border: 2px solid transparent;
     background-clip: padding-box;

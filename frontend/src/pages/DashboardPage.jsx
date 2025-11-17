@@ -108,10 +108,10 @@ const PageHeader = styled.header`
   padding: clamp(22px, 3vw, 28px) clamp(24px, 3.4vw, 32px);
   border-radius: 26px;
   background:
-    radial-gradient(160% 140% at 110% -30%, rgba(56, 189, 248, 0.22), transparent 60%),
-    radial-gradient(140% 140% at -20% 120%, rgba(129, 140, 248, 0.18), transparent 58%),
-    rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.24);
+    radial-gradient(160% 140% at 110% -30%, rgba(56, 189, 248, 0.45), transparent 60%),
+    radial-gradient(140% 140% at -20% 120%, rgba(129, 140, 248, 0.35), transparent 58%),
+    rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.40);
   box-shadow: 0 26px 52px -36px rgba(15, 23, 42, 1);
   overflow: hidden;
 
@@ -119,7 +119,7 @@ const PageHeader = styled.header`
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, rgba(56, 189, 248, 0.12), transparent 45%);
+    background: linear-gradient(120deg, rgba(56, 189, 248, 0.25), transparent 45%);
     opacity: 0.4;
     pointer-events: none;
   }
@@ -163,9 +163,9 @@ const UpdatedBadge = styled.span`
   gap: 12px;
   padding: 10px 18px;
   border-radius: 999px;
-  background: linear-gradient(125deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.14));
+  background: linear-gradient(125deg, rgba(56, 189, 248, 0.35), rgba(129, 140, 248, 0.28));
   border: 1px solid rgba(148, 163, 184, 0.25);
-  color: rgba(226, 232, 240, 0.86);
+  color: rgba(226, 232, 240, 1);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.01em;
