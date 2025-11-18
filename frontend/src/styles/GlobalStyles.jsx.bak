@@ -2,25 +2,25 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   :root {
-    --color-bg-dark:       #0f172a;
-    --color-bg-light:      #153b4a;
-    --color-sidebar-bg:    #12343f;
-    --color-primary:       #06B6D4;
-    --color-accent:        #F472B6;
+    --color-bg-dark:       #1A202C;
+    --color-bg-light:      #304953;
+    --color-sidebar-bg:    #294147;
+    --color-primary:       #38B2AC;
+    --color-accent:        #EC4899;
     --color-text-light:    #F7FAFC;
-    --color-text-muted:    #94A3B8;
-    --color-border:        rgba(148,163,184,0.5);
-    --color-red-danger:    #EF4444;
+    --color-text-muted:    #A0AEC0;
+    --color-border:        #4A5568;
+    --color-red-danger:    #E53E3E;
 
     --bg:        var(--color-bg-dark);
     --bg-elev:   var(--color-bg-light);
     --sidebar:   var(--color-sidebar-bg);
     --card:      var(--color-bg-light);
     --accent:    var(--color-primary);
-    --accent-d:  rgba(14,165,233,0.68);
+    --accent-d:  rgba(56,189,248,0.55);
     --text:      var(--color-text-light);
     --muted:     var(--color-text-muted);
-    --border:    rgba(148,163,184,0.5);
+    --border:    rgba(148,163,184,0.40);
 
     --radius: 16px;
   }

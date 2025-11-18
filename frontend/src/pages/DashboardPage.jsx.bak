@@ -102,20 +102,41 @@ const PageHeader = styled.header`
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 18px 28px;
   padding: clamp(22px, 3vw, 28px) clamp(24px, 3.4vw, 32px);
   border-radius: 26px;
-  /* Fundo escuro e sóbrio: remover tons brancos/claros */
-  background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98));
-  border: 1px solid rgba(2,6,23,0.6);
-  box-shadow: 0 26px 52px -36px rgba(2, 6, 23, 0.9);
+  background:
+    radial-gradient(160% 140% at 110% -30%, rgba(56, 189, 248, 0.45), transparent 60%),
+    radial-gradient(140% 140% at -20% 120%, rgba(129, 140, 248, 0.35), transparent 58%),
+    rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.40);
+  box-shadow: 0 26px 52px -36px rgba(15, 23, 42, 1);
   overflow: hidden;
 
-  /* remover brilhos claros para um visual mais sóbrio */
-  &::before { display: none; }
-  &::after { display: none; }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -40%;
+    width: 120%;
+    height: 180%;
+    background: linear-gradient(120deg, rgba(180,231,226,0.14), rgba(255,255,255,0) 60%);
+    filter: blur(22px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(56, 189, 248, 0.25), transparent 45%);
+    opacity: 0.65;
+    pointer-events: none;
+  }
 `;
 
 const Title = styled.h1`
@@ -153,54 +174,30 @@ const HeaderContent = styled.div`
 const UpdatedBadge = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 10px; /* ~2.5 */
-  padding: 8px 16px; /* px-4 py-2 */
-  height: 36px;
-  border-radius: 12px; /* rounded-xl */
-  background: rgba(31,41,55,0.6); /* slate-800/60 */
-  border: 1px solid rgba(55,65,81,0.8); /* slate-700/80 */
-  color: rgba(241,245,249,0.92);
-  font-size: 0.75rem; /* text-sm */
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(125deg, rgba(56, 189, 248, 0.35), rgba(129, 140, 248, 0.28));
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: rgba(226, 232, 240, 1);
+  font-size: 0.82rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em; /* tracking-widest */
-  box-shadow: 0 20px 40px -10px rgba(2,6,23,0.6); /* shadow-xl-ish */
-  backdrop-filter: blur(4px); /* backdrop-blur-sm */
-  transition: all 300ms ease;
-  align-self: flex-start;
-
-  &:hover {
-    border-color: rgba(14,165,233,0.5); /* cyan hover */
-  }
+  letter-spacing: 0.01em;
+  box-shadow: 0 12px 34px -20px rgba(14, 116, 144, 0.65);
+  backdrop-filter: blur(12px);
 `;
 
 const UpdatedIcon = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  background: rgba(16,185,129,0.22);
-  border: 1px solid rgba(16,185,129,0.6);
-  box-shadow: 0 0 8px rgba(16,185,129,0.35);
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: rgba(22, 163, 74, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
   position: relative;
-`;
-const ping = keyframes`
-  0% { transform: scale(1); opacity: 0.75; }
-  100% { transform: scale(2.2); opacity: 0; }
-`;
-
-const pulseFast = keyframes`
-  0% { transform: scale(1); opacity: 0.6; }
-  70% { transform: scale(1.8); opacity: 0.2; }
-  100% { transform: scale(2.6); opacity: 0; }
-`;
-
-const pulseMid = keyframes`
-  0% { transform: scale(1); opacity: 0.7; }
-  70% { transform: scale(1.6); opacity: 0.25; }
-  100% { transform: scale(2.2); opacity: 0; }
 `;
 const pulse = keyframes`
   0%, 100% {
@@ -234,44 +231,12 @@ const OnlineDot = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 12px; /* h-3 */
-  height: 12px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  position: relative;
-
-  /* outer slow ring */
-  &::after {
-    content: '';
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 100%; height: 100%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: rgba(56,189,248,0.35); /* cyan-400-ish */
-    opacity: 0.75;
-    animation: ${pulseFast} 1s infinite;
-  }
-
-  /* middle ring */
-  &::before {
-    content: '';
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 80%; height: 80%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: rgba(6,182,212,0.45); /* cyan-500-ish */
-    opacity: 0.6;
-    animation: ${pulseMid} 0.7s infinite;
-  }
-
-  /* inner glowing dot */
-  > span {
-    display: inline-block;
-    width: 12px; height: 12px; border-radius: 50%;
-    background: linear-gradient(90deg, #22d3ee, #60a5fa); /* cyan->blue */
-    box-shadow: 0 0 12px rgba(34,211,238,1);
-  }
+  background: linear-gradient(120deg, #22c55e, #4ade80);
+  color: #0f172a;
+  animation: ${pulse} 2s ease-in-out infinite;
 `;
 
 const UpdatedText = styled.span`
@@ -310,13 +275,13 @@ const SectionsGrid = styled.div`
 `;
 
 const Section = styled.section`
-  background: linear-gradient(180deg, rgba(11,30,42,0.9) 0%, rgba(6,20,34,0.92) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(14,165,233,0.12);
+  background: linear-gradient(180deg, rgba(54,73,78,0.86) 0%, rgba(26,49,55,0.86) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(157, 217, 210, 0.10);
   border-radius: 22px;
   
   padding: clamp(18px, 3vw, 26px);
-  box-shadow: 0 22px 56px -36px rgba(2, 6, 23, 0.9);
+  box-shadow: 0 18px 40px -32px rgba(15, 23, 42, 1);
   display: flex;
   flex-direction: column;
   gap: clamp(16px, 2.2vw, 22px);
@@ -374,9 +339,9 @@ const MetricGrid = styled.div`
 `;
 
 const MetricCard = styled.article`
-  background: linear-gradient(160deg, rgba(10,18,30,0.9), rgba(6,12,22,0.95));
+  background: linear-gradient(160deg, rgba(45, 55, 72, 0.88), rgba(26, 32, 44, 0.92));
   border-radius: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.26);
+  border: 1px solid rgba(148, 163, 184, 0.18);
   padding: clamp(18px, 2.6vw, 22px);
   display: flex;
   flex-direction: column;
@@ -397,14 +362,14 @@ const MetricCard = styled.article`
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(140deg, rgba(14,165,233,0) 25%, rgba(14, 165, 233, 0.28) 75%);
+    background: linear-gradient(140deg, rgba(56, 189, 248, 0) 25%, rgba(14, 165, 233, 0.18) 75%);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
   }
 
   &:hover {
-    border-color: rgba(14,165,233,0.6);
+    border-color: rgba(56, 189, 248, 0.35);
   }
 
   &:hover::after {
@@ -420,7 +385,7 @@ const MetricHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(241, 245, 249, 0.78);
+  color: rgba(226, 232, 240, 0.62);
   font-size: clamp(0.76rem, 0.92vw, 0.84rem);
 `;
 
@@ -435,14 +400,14 @@ const Trend = styled.span`
   gap: 6px;
   font-size: clamp(0.76rem, 0.95vw, 0.82rem);
   font-weight: 600;
-  color: ${({ $direction }) => ($direction === 'up' ? '#10B981' : '#EF4444')};
+  color: ${({ $direction }) => ($direction === 'up' ? '#34d399' : '#f87171')};
 `;
 
 const TrendBadge = styled.span`
-  background: rgba(148,163,184,0.12);
+  background: rgba(148,163,184,0.08);
   border-radius: 999px;
   padding: 6px 10px;
-  color: rgba(241, 245, 249, 0.78);
+  color: rgba(226, 232, 240, 0.72);
   font-size: clamp(0.72rem, 0.9vw, 0.8rem);
 `;
 
@@ -471,7 +436,7 @@ const TimelineScrollArea = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.52);
+    background: rgba(148, 163, 184, 0.35);
     border-radius: 999px;
   }
 `;
@@ -526,9 +491,9 @@ const BarTrack = styled.div`
   position: relative;
   height: 12px;
   border-radius: 999px;
-  background: rgba(148, 163, 184, 0.24);
+  background: rgba(148, 163, 184, 0.18);
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12);
 `;
 
 const BarFill = styled.div`
@@ -546,7 +511,7 @@ const HealthGrid = styled.div`
 `;
 
 const HealthCard = styled.div`
-  background: linear-gradient(160deg, rgba(10,18,30,0.9), rgba(6,12,22,0.95));
+  background: linear-gradient(160deg, rgba(45, 55, 72, 0.88), rgba(26, 32, 44, 0.92));
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.18);
   padding: 18px;
@@ -579,9 +544,9 @@ const HealthHeader = styled.div`
 
 const HealthStatus = styled.span`
   color: ${({ $variant }) => {
-  if ($variant === 'ok') return '#10B981';
+    if ($variant === 'ok') return '#34d399';
     if ($variant === 'warn') return '#f59e0b';
-  return '#EF4444';
+    return '#f87171';
   }};
   font-weight: 600;
   font-size: clamp(0.78rem, 0.94vw, 0.84rem);
@@ -601,7 +566,7 @@ const ChecklistItem = styled.li`
   align-items: center;
   gap: 10px;
   font-size: clamp(0.8rem, 0.98vw, 0.86rem);
-  color: rgba(241,245,249,0.85);
+  color: rgba(226,232,240,0.78);
 `;
 
 const ChecklistBadge = styled.span`
@@ -617,9 +582,9 @@ const ErrorBanner = styled.div`
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  background: rgba(248, 113, 113, 0.18);
-  border: 1px solid rgba(248, 113, 113, 0.6);
-  color: #fee2e2;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  color: #fecaca;
   border-radius: 14px;
   padding: 14px 18px;
 `;
@@ -657,8 +622,8 @@ const AlertItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148,163,184,0.18);
+  background: rgba(15, 23, 42, 0.52);
+  border: 1px solid rgba(148,163,184,0.12);
   border-radius: 16px;
   padding: 14px 16px;
 `;
@@ -701,7 +666,7 @@ const QuickActionButton = styled.button`
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 16px;
   padding: 16px;
-  background: linear-gradient(160deg, rgba(10,18,30,0.9), rgba(6,12,22,0.95));
+  background: linear-gradient(160deg, rgba(45, 55, 72, 0.88), rgba(26, 32, 44, 0.92));
   color: rgba(226,232,240,0.9);
   font-weight: 600;
   font-size: clamp(0.86rem, 1vw, 0.94rem);
@@ -714,8 +679,8 @@ const QuickActionButton = styled.button`
   will-change: transform, box-shadow;
 
   &:hover {
-    border-color: rgba(14,165,233,0.75);
-    background: linear-gradient(160deg, rgba(10,18,30,0.92), rgba(6,12,22,0.98));
+    border-color: rgba(56, 189, 248, 0.55);
+    background: linear-gradient(160deg, rgba(45, 55, 72, 0.92), rgba(26, 32, 44, 0.98));
     transform: translateY(-6px) scale(1.01);
     box-shadow: 0 24px 50px -28px rgba(15, 23, 42, 0.82);
   }
@@ -726,7 +691,7 @@ const QuickActionButton = styled.button`
 
   svg {
     font-size: 1.2rem;
-    color: rgba(14,165,233,0.92);
+    color: rgba(56, 189, 248, 0.85);
   }
 `;
 
@@ -913,8 +878,15 @@ const DashboardPage = () => {
         </HeaderContent>
         {lastUpdated && (
           <UpdatedBadge>
-            <OnlineDot><span /></OnlineDot>
-            <UpdatedText style={{ color: 'rgba(34,211,238,0.95)', fontWeight: 700 }}>Online</UpdatedText>
+            <UpdatedIcon>
+              <OnlineDot>
+                <FaCircle />
+              </OnlineDot>
+            </UpdatedIcon>
+            <UpdatedText>
+              <strong>Online</strong>
+              <UpdatedMeta>{lastUpdated}</UpdatedMeta>
+            </UpdatedText>
           </UpdatedBadge>
         )}
       </PageHeader>
@@ -976,7 +948,7 @@ const DashboardPage = () => {
                     <BarTrack>
                       <BarFill
                         $progress={plan.share ?? 0}
-                        $gradient="linear-gradient(90deg, #06B6D4, #0EA5E9)"
+                        $gradient="linear-gradient(90deg, #38B2AC, #0EA5E9)"
                       />
                     </BarTrack>
                   </div>
@@ -1049,10 +1021,10 @@ const DashboardPage = () => {
                   <Timeline>
                     {activities.map((activity) => {
                       const tone = activity.action === 'cancelado'
-                        ? 'rgba(248,113,113,0.5)'
+                        ? 'rgba(248,113,113,0.35)'
                         : activity.action === 'suspenso'
-                          ? 'rgba(250,204,21,0.5)'
-                          : 'rgba(52,211,153,0.5)';
+                          ? 'rgba(250,204,21,0.35)'
+                          : 'rgba(52,211,153,0.35)';
 
                       const icon = activity.action === 'cancelado'
                         ? <FiArrowDownLeft />
