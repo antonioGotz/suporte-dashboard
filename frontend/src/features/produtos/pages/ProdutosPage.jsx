@@ -5,6 +5,8 @@ import { FaPlus, FaArrowUp, FaArrowDown, FaTh, FaList } from 'react-icons/fa';
 import * as productsService from '../services/productsService';
 import ProductCard from '../components/ProductCard.jsx';
 import ProductListItem from '../components/ProductListItem.jsx';
+import { useIsMobile } from '../../../hooks/useIsMobile';
+import breakpoints from '../../../styles/breakpoints';
 import ConfirmationModal from '../../../components/ConfirmationModal.jsx';
 import Pagination from '../../../components/Pagination.jsx';
 // Função utilitária para deduplicar por id
@@ -110,6 +112,7 @@ const ListContainer = styled.div`
 `;
 
 const ProdutosPage = () => {
+  const isMobile = useIsMobile(breakpoints.mobile || 768);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -184,20 +187,26 @@ const ProdutosPage = () => {
   }, [products]);
 
   const productList = useMemo(() =>
-    uniqueProducts.map((product, idx) =>
-      viewMode === 'grid' ? (
+    uniqueProducts.map((product, idx) => {
+      if (isMobile) {
+        return (
+          <ProdutoCard key={`prod-mobile-${product.id ?? idx}`} product={product} onDelete={handleDeleteProduct} />
+        );
+      }
+      return viewMode === 'grid' ? (
         <ProductCard key={`prod-${product.id ?? idx}`} product={product} onDelete={handleDeleteProduct} idx={idx} />
       ) : (
-          <ProductListItem key={`prod-${product.id ?? idx}`} product={product} onDelete={handleDeleteProduct} idx={idx} />
-        )
-    ),
-    [uniqueProducts, viewMode]
+        <ProductListItem key={`prod-${product.id ?? idx}`} product={product} onDelete={handleDeleteProduct} idx={idx} />
+      );
+    }),
+    [uniqueProducts, viewMode, isMobile]
   );
 
   const renderContent = () => {
     if (loading) return <p>Carregando produtos...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
     if (uniqueProducts.length === 0) return <p>Nenhum produto encontrado.</p>;
+    if (isMobile) return <CardsGrid>{productList}</CardsGrid>;
     return viewMode === 'grid' ? <ProductGrid>{productList}</ProductGrid> : <ListContainer>{productList}</ListContainer>;
   };
 
@@ -258,3 +267,75 @@ const ProdutosPage = () => {
 };
 
 export default ProdutosPage;
+
+// ==================== Mobile Styled Components & Mobile Card ====================
+const CardsGrid = styled.div`
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  grid-template-columns: 1fr;
+`;
+
+const ProdutoCard = ({ product, onDelete }) => {
+  const handleEdit = () => {
+    // navegação para edição se necessário
+    window.location.href = `/produtos/${product.id}/editar`;
+  };
+  return (
+    <ProdutoCardWrapper>
+      <CardHeader>
+        {product.name || product.title || 'Produto'}
+      </CardHeader>
+      <CardBody>
+        <CardField>
+          <small>Valor</small>
+          <div>{product.price ? product.price : '—'}</div>
+        </CardField>
+        <CardField>
+          <small>Periodicidade</small>
+          <div>{product.period || product.periodicity || '—'}</div>
+        </CardField>
+        <CardField>
+          <small>Status</small>
+          <div>{product.status || '—'}</div>
+        </CardField>
+        <CardField>
+          <small>Descrição</small>
+          <div>{product.description || product.summary || '—'}</div>
+        </CardField>
+        <CardActions>
+          <button onClick={handleEdit}>Editar</button>
+          <button onClick={() => onDelete && onDelete(product.id)}>Excluir</button>
+        </CardActions>
+      </CardBody>
+    </ProdutoCardWrapper>
+  );
+};
+
+const ProdutoCardWrapper = styled.div`
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  overflow: hidden;
+  background: #071124;
+  border: 1px solid rgba(255,255,255,0.03);
+`;
+const CardHeader = styled.div`
+  background: linear-gradient(90deg,#06b6d4 0%, #3b82f6 100%);
+  padding: 16px;
+  color: #fff;
+  font-weight: 700;
+`;
+const CardBody = styled.div`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+const CardField = styled.div`
+  small { color: #94a3b8; font-size: 12px; }
+  div { color: #e5e7eb; font-size: 15px; font-weight: 700; }
+`;
+const CardActions = styled.div`
+  display:flex; gap:8px; margin-top:16px;
+  button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; }
+`;

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useIsMobile } from '../../../hooks/useIsMobile';
+import breakpoints from '../../../styles/breakpoints';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getHistorico, getHistoricoCounts } from '../services/historicoService';
@@ -31,6 +33,7 @@ const HistoricoPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilter, setActiveFilter] = useState('todos');
   const [counts, setCounts] = useState(null);
+  const isMobile = useIsMobile(breakpoints.mobile || 768);
 
   const fetchHistorico = useCallback(async () => {
     setLoading(true);
@@ -103,7 +106,14 @@ const HistoricoPage = () => {
       )) || null }
     >
       {loading ? <p style={{color:'#fff'}}>Carregando historico...</p> : error ? <p style={{ color: 'red' }}>{error}</p> : (
-        <Table>
+        isMobile ? (
+          <CardsList>
+            {logs.map((log, idx) => (
+              <PedidoCard key={`hist-card-${log.id ?? idx}`} log={log} />
+            ))}
+          </CardsList>
+        ) : (
+          <Table>
           <thead>
             <Tr>
               <Th>Data</Th>
@@ -140,9 +150,78 @@ const HistoricoPage = () => {
             })()}
           </tbody>
         </Table>
+        )
       )}
     </ListPageLayout>
   );
 };
+
+// ================= Mobile components =================
+const CardsList = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:16px;
+`;
+
+const PedidoCard = ({ log }) => {
+  const date = log.created_at ? new Date(log.created_at).toLocaleString('pt-BR') : '-';
+  const status = (log.status_code || log.action || '').toLowerCase();
+  const getBadge = () => {
+    switch (status) {
+      case 'pending':
+      case 'created': return <StatusBadge style={{ background: '#F59E0B' }}>Pendente</StatusBadge>;
+      case 'completed':
+      case 'reactivated': return <StatusBadge style={{ background: '#10B981' }}>Concluído</StatusBadge>;
+      case 'canceled': return <StatusBadge style={{ background: '#EF4444' }}>Cancelado</StatusBadge>;
+      default: return <StatusBadge style={{ background: '#718096' }}>{(log.status_label || log.action || 'N/A')}</StatusBadge>;
+    }
+  };
+  return (
+    <PedidoCardWrapper>
+      <CardHeader>
+        <OrderNumber>#{log.id || '-'}</OrderNumber>
+        <OrderDate>{date}</OrderDate>
+      </CardHeader>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ flex: 1 }}>
+          <CardInfo>
+            <InfoRow><small>Cliente</small><div>{log.subscriber_name || 'N/A'}</div></InfoRow>
+            <InfoRow><small>Assinatura</small><div>{log.plan_name || log.subscription || '—'}</div></InfoRow>
+            <InfoRow><small>Valor</small><div>{log.value || log.amount || '—'}</div></InfoRow>
+          </CardInfo>
+        </div>
+        <div style={{ marginLeft: 12 }}>{getBadge()}</div>
+      </div>
+      {log.reason && <div style={{ marginTop: 12, color: '#94a3b8' }}>{log.reason}</div>}
+    </PedidoCardWrapper>
+  );
+};
+
+const PedidoCardWrapper = styled.div`
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:8px;
+  padding:16px;
+  background: #071124;
+`;
+const CardHeader = styled.div`
+  display:flex; justify-content:space-between; margin-bottom:12px;
+`;
+const OrderNumber = styled.div`
+  font-weight:700; font-size:16px; color:#e5e7eb;
+`;
+const OrderDate = styled.div`
+  color:#94a3b8; font-size:13px;
+`;
+const StatusBadge = styled.div`
+  color:#fff; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:700;
+`;
+const CardInfo = styled.div`
+  display:flex; flex-direction:column; gap:8px;
+`;
+const InfoRow = styled.div`
+  small{ color:#94a3b8; font-size:12px; display:block; }
+  div{ color:#e5e7eb; font-size:14px; font-weight:600; }
+`;
 
 export default HistoricoPage;

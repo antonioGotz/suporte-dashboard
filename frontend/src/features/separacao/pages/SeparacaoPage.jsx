@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useIsMobile } from '../../../hooks/useIsMobile';
+import breakpoints from '../../../styles/breakpoints';
 import Toast from '../../../components/Toast.jsx';
 import { FaSort, FaSortUp, FaSortDown, FaFilter, FaCaretDown } from 'react-icons/fa';
 import styled from "styled-components";
@@ -629,6 +631,15 @@ const SeparacaoPage = () => {
   // Mantém controle local de pedidos com etiqueta gerada nesta sessão
   const [labelLocked, setLabelLocked] = useState({});
 
+  const isMobile = useIsMobile(breakpoints.mobile || 768);
+
+  // Se mobile, força view timeline (não permite trocar)
+  useEffect(() => {
+    if (isMobile) {
+      setViewMode('timeline');
+    }
+  }, [isMobile]);
+
   const renderKanban = () => (
     <KanbanWrapper>
       {STATUS_PIPELINE.filter((c) => !("isFallback" in c && c.isFallback)).map((column) => {
@@ -850,11 +861,16 @@ const SeparacaoPage = () => {
         title="Separação de Pedidos"
         description="Painel visual para acompanhar e avançar cada etapa da logística de separação."
         filters={
-          <>
-            <FiltersBar
-              filters={filterOptions}
-            />
-          </>
+          !isMobile ? (
+            <>
+              <FiltersBar
+                filters={filterOptions}
+              />
+            </>
+          ) : (
+            // Mobile: esconder botões de view e exibir apenas um rótulo simples
+            <div style={{ padding: '8px 0', color: '#e5e7eb', fontWeight: 700 }}>Linha do Tempo</div>
+          )
         }
         headerRight={(
           <SearchBar
