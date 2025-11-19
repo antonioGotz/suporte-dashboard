@@ -14,6 +14,11 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: 🔑 Preparar chave SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > /tmp/ssh_key
+          chmod 600 /tmp/ssh_key
+
       - name: 🐘 Setup PHP 8.3
         uses: shivammathur/setup-php@v2
         with:
@@ -59,7 +64,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_path: /tmp/ssh_key
           source: "backend-deploy.tar.gz,frontend-deploy.tar.gz"
           target: "/tmp/deploy-${{ github.run_id }}"
 
@@ -68,7 +73,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_path: /tmp/ssh_key
           script: |
             set -ex
             
@@ -179,7 +184,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_path: /tmp/ssh_key
           script: |
             PROJECT_PATH="${{ secrets.VPS_PATH }}"
             
