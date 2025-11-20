@@ -80,7 +80,7 @@ jobs:
             
             echo "🚀 Deploy #$DEPLOY_ID iniciado"
             
-            BACKUP_DIR="/root/backups/$(date +%Y%m%d_%H%M%S)"
+            BACKUP_DIR="/home/deploy/backups/$(date +%Y%m%d_%H%M%S)"
             mkdir -p "$BACKUP_DIR"
             
             if [ -d "$PROJECT_PATH" ]; then
