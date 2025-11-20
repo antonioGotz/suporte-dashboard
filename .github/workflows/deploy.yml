@@ -97,78 +97,78 @@ jobs:
               cp .env /tmp/env-backup-$DEPLOY_ID
             fi
             
-            tar -xzf /tmp/deploy-$DEPLOY_ID/backend-deploy.tar.gz
-            
+            sudo tar -xzf /tmp/deploy-$DEPLOY_ID/backend-deploy.tar.gz
+
             if [ -f /tmp/env-backup-$DEPLOY_ID ]; then
-              cp /tmp/env-backup-$DEPLOY_ID .env
+              sudo cp /tmp/env-backup-$DEPLOY_ID .env
             else
-              cp .env.example .env
-              sed -i "s|APP_URL=.*|APP_URL=https://$DOMAIN|g" .env
-              sed -i "s|FRONTEND_URL=.*|FRONTEND_URL=https://$DOMAIN|g" .env
-              sed -i "s|SESSION_DOMAIN=.*|SESSION_DOMAIN=.suporteatostech.com|g" .env
-              sed -i "s|SANCTUM_STATEFUL_DOMAINS=.*|SANCTUM_STATEFUL_DOMAINS=$DOMAIN|g" .env
-              sed -i "s|CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=https://$DOMAIN|g" .env
-              sed -i "s|DB_DATABASE=.*|DB_DATABASE=${{ secrets.DB_DATABASE }}|g" .env
-              sed -i "s|DB_USERNAME=.*|DB_USERNAME=${{ secrets.DB_USERNAME }}|g" .env
-              sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${{ secrets.DB_PASSWORD }}|g" .env
-              sed -i "s|APP_DEBUG=.*|APP_DEBUG=false|g" .env
-              sed -i "s|SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=true|g" .env
+              sudo cp .env.example .env
+              sudo sed -i "s|APP_URL=.*|APP_URL=https://$DOMAIN|g" .env
+              sudo sed -i "s|FRONTEND_URL=.*|FRONTEND_URL=https://$DOMAIN|g" .env
+              sudo sed -i "s|SESSION_DOMAIN=.*|SESSION_DOMAIN=.suporteatostech.com|g" .env
+              sudo sed -i "s|SANCTUM_STATEFUL_DOMAINS=.*|SANCTUM_STATEFUL_DOMAINS=$DOMAIN|g" .env
+              sudo sed -i "s|CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=https://$DOMAIN|g" .env
+              sudo sed -i "s|DB_DATABASE=.*|DB_DATABASE=${{ secrets.DB_DATABASE }}|g" .env
+              sudo sed -i "s|DB_USERNAME=.*|DB_USERNAME=${{ secrets.DB_USERNAME }}|g" .env
+              sudo sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${{ secrets.DB_PASSWORD }}|g" .env
+              sudo sed -i "s|APP_DEBUG=.*|APP_DEBUG=false|g" .env
+              sudo sed -i "s|SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=true|g" .env
             fi
-            
-            composer install --no-dev --optimize-autoloader --no-interaction
-            
-            mkdir -p storage/framework/{sessions,views,cache}
-            mkdir -p storage/logs
-            mkdir -p bootstrap/cache
-            
+
+            sudo composer install --no-dev --optimize-autoloader --no-interaction
+
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
             if ! grep -q "APP_KEY=base64:" .env; then
-              php artisan key:generate --force
+              sudo php artisan key:generate --force
             fi
-            
-            chown -R www-data:www-data storage bootstrap/cache
-            chmod -R 775 storage bootstrap/cache
+
+            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
             
             cd public
-            
+
             if [ -f index.php ]; then
-              cp index.php /tmp/index.php.bak-$DEPLOY_ID
+              sudo cp index.php /tmp/index.php.bak-$DEPLOY_ID
             fi
-            
-            find . -mindepth 1 ! -name 'index.php' -delete 2>/dev/null || true
-            
-            tar -xzf /tmp/deploy-$DEPLOY_ID/frontend-deploy.tar.gz
-            
+
+            sudo find . -mindepth 1 ! -name 'index.php' -delete 2>/dev/null || true
+
+            sudo tar -xzf /tmp/deploy-$DEPLOY_ID/frontend-deploy.tar.gz
+
             if [ -f index.html ]; then
               echo "✅ index.html encontrado"
             elif [ -f index.react.html ]; then
-              ln -sf index.react.html index.html
+              sudo ln -sf index.react.html index.html
             else
               echo "❌ ERRO: index.html não encontrado!"
               exit 1
             fi
-            
+
             if [ -f /tmp/index.php.bak-$DEPLOY_ID ]; then
-              cp /tmp/index.php.bak-$DEPLOY_ID index.php
+              sudo cp /tmp/index.php.bak-$DEPLOY_ID index.php
             fi
-            
+
             cd "$PROJECT_PATH"
-            chown -R www-data:www-data public
-            
-            php artisan config:clear
-            php artisan cache:clear
-            php artisan route:clear
-            php artisan view:clear
-            
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            
+            sudo chown -R www-data:www-data public
+
+            sudo php artisan config:clear
+            sudo php artisan cache:clear
+            sudo php artisan route:clear
+            sudo php artisan view:clear
+
+            sudo php artisan config:cache
+            sudo php artisan route:cache
+            sudo php artisan view:cache
+
             if [ ! -L public/storage ]; then
-              php artisan storage:link
+              sudo php artisan storage:link
             fi
-            
-            systemctl restart php8.3-fpm
-            systemctl restart nginx
+
+            sudo systemctl restart php8.3-fpm
+            sudo systemctl restart nginx
             
             rm -rf /tmp/deploy-$DEPLOY_ID
             rm -f /tmp/env-backup-$DEPLOY_ID
