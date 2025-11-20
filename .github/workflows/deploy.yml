@@ -169,11 +169,11 @@ jobs:
 
             sudo systemctl restart php8.3-fpm
             sudo systemctl restart nginx
-            
-            rm -rf /tmp/deploy-$DEPLOY_ID
-            rm -f /tmp/env-backup-$DEPLOY_ID
-            rm -f /tmp/index.php.bak-$DEPLOY_ID
-            
+
+            sudo rm -rf /tmp/deploy-$DEPLOY_ID
+            sudo rm -f /tmp/env-backup-$DEPLOY_ID
+            sudo rm -f /tmp/index.php.bak-$DEPLOY_ID
+
             echo "✅ Deploy concluído!"
 
       - name: ✅ Verify Deploy
