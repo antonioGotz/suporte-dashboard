@@ -35,7 +35,9 @@ Route::get('/health', function () {
 // Autenticação (login)
 Route::post('/login', [AuthController::class, 'login']);
 
-// ROTA DE TESTE - REMOVER DEPOIS
+// ROTA DE TESTE - COMENTADA POR SEGURANÇA (expõe stack trace)
+// NÃO DESCOMENTAR EM PRODUÇÃO sem adicionar verificação de ambiente
+/*
 Route::post('/test-login', function (Request $request) {
     try {
         $credentials = $request->validate([
@@ -78,6 +80,7 @@ Route::post('/test-login', function (Request $request) {
         ], 500);
     }
 });
+*/
 
 // Retornar usuário autenticado
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

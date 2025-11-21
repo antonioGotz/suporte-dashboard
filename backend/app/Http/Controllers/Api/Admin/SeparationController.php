@@ -815,4 +815,19 @@ class SeparationController extends Controller
 
         return response()->json($paginator);
     }
+
+    /**
+     * Exibe os detalhes de uma separação específica.
+     */
+    public function show($id)
+    {
+        // Busca o pedido com os relacionamentos necessários para o frontend
+        $order = Order::with(['user', 'products'])->find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Pedido não encontrado'], 404);
+        }
+
+        return response()->json($order);
+    }
 }

@@ -1,0 +1,57 @@
+## HTTP - redirect to HTTPS except ACME challenge
+server {
+    listen 80;
+    server_name suporteatostech.com www.suporteatostech.com;
+
+    root /var/www/html/public;
+    index index.php index.html;
+
+    location /.well-known/acme-challenge/ {
+        alias /var/www/certbot/.well-known/acme-challenge/;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+## HTTPS server
+server {
+    listen 443 ssl http2;
+    server_name suporteatostech.com www.suporteatostech.com;
+
+    root /var/www/html/public;
+    index index.php index.html;
+
+    ssl_certificate /etc/letsencrypt/live/suporteatostech.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/suporteatostech.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+
+    # Static files / SPA
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Pass PHP scripts to PHP-FPM container
+    location ~ \'\.php$' {
+        try_files $uri /index.php =404;
+        fastcgi_split_path_info ^(.+\\.php)(/.+)$;
+        fastcgi_pass aevolua_php:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+    # Deny hidden files
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    # ACME challenge for certbot
+    location /.well-known/acme-challenge/ {
+        alias /var/www/certbot/.well-known/acme-challenge/;
+    }
+}
