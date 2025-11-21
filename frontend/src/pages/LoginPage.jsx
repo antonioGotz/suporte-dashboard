@@ -6,6 +6,7 @@ import styled, { keyframes } from 'styled-components';
 import api, { ensureCsrfCookie } from '../services/api';
 import { useAuth } from '../context/AuthContext.jsx';
 import logo from '../assets/logo.png';
+import SplashScreen from '../components/SplashScreen';
 
 const gradientDrift = keyframes`
     0% {
@@ -16,6 +17,17 @@ const gradientDrift = keyframes`
     }
     100% {
         background-position: 0% 50%;
+    }
+`;
+
+const blurFadeOut = keyframes`
+    0% {
+        filter: blur(0px);
+        opacity: 1;
+    }
+    100% {
+        filter: blur(8px);
+        opacity: 0.3;
     }
 `;
 
@@ -32,6 +44,16 @@ const LoginContainer = styled.div`
     background: radial-gradient(circle at top, #395b6a 0%, #1b3037 45%, #102027 100%);
     background-size: 160% 160%;
     animation: ${gradientDrift} 24s ease alternate infinite;
+
+    &.blur-fade {
+        animation: ${blurFadeOut} 1s ease forwards;
+        pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    }
 `;
 
 const boxReveal = keyframes`
@@ -153,6 +175,13 @@ const LoginBox = styled.div`
     z-index: 1;
     opacity: 0;
     animation: ${boxReveal} 0.7s ease forwards;
+
+    @media (max-width: 768px) {
+        padding: 24px 20px;
+        border-radius: 16px;
+        max-width: calc(100% - 2rem);
+    }
+
     &::before {
         content: '';
         position: absolute;
@@ -171,6 +200,11 @@ const LogoImage = styled.img`
     max-width: 80%;
     margin-bottom: 20px;
     animation: ${logoPulse} 6.8s ease-in-out infinite;
+
+    @media (max-width: 768px) {
+        width: 200px;
+        margin-bottom: 16px;
+    }
 `;
 
 const Description = styled.p`
@@ -179,6 +213,12 @@ const Description = styled.p`
     color: rgba(224,224,224,0.94);
     font-weight: 500;
     letter-spacing: 0.25px;
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+        margin: 8px 0 20px 0;
+        line-height: 1.5;
+    }
 `;
 
 const LoginForm = styled.form`
@@ -187,6 +227,10 @@ const LoginForm = styled.form`
     gap: 25px;
     opacity: 0;
     animation: ${formFade} 0.75s ease forwards 0.2s;
+
+    @media (max-width: 768px) {
+        gap: 18px;
+    }
 `;
 
 const FormGroup = styled.div`
@@ -208,6 +252,11 @@ const Label = styled.label`
     margin-bottom: 12px;
     text-align: left;
     font-weight: 600;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
 `;
 
 const Input = styled.input`
@@ -222,6 +271,13 @@ const Input = styled.input`
     outline: none;
     box-sizing: border-box;
     transition: background 0.2s ease, box-shadow 0.2s ease;
+
+    @media (max-width: 768px) {
+        height: 46px;
+        font-size: 16px; /* Keep 16px to prevent iOS zoom on focus */
+        padding: 10px 12px;
+    }
+
     &::placeholder {
         color: rgba(200,200,200,0.5);
     }
@@ -248,6 +304,13 @@ const Button = styled.button`
     overflow: hidden;
     opacity: 0;
     animation: ${fieldReveal} 0.6s ease forwards 0.48s, ${buttonGlow} 4.2s ease-in-out infinite 1.4s;
+
+    @media (max-width: 768px) {
+        height: 48px;
+        font-size: 16px;
+        margin-top: 6px;
+    }
+
     &:hover {
         background: #86c7bf;
         transform: translateY(-2px);
@@ -281,6 +344,38 @@ const Message = styled.p`
     letter-spacing: 0.2px;
     opacity: 0;
     animation: ${fieldReveal} 0.6s ease forwards 0.62s;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-top: 16px;
+    }
+`;
+
+const PasswordToggle = styled.button`
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #9dd9d2;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+        padding: 6px;
+        right: 6px;
+    }
 `;
 
 const AmbientLayer = styled.div`
@@ -404,6 +499,8 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [successAnimation, setSuccessAnimation] = useState(false);
+    const [showSplash, setShowSplash] = useState(false);
+    const [splashData, setSplashData] = useState(null);
     const { login, user } = useAuth();
 
     useEffect(() => {
@@ -429,10 +526,8 @@ const LoginPage = () => {
             const token = response?.data?.token;
 
             if (userResp && token) {
-                setSuccessAnimation(true);
-                setTimeout(() => {
-                    login(userResp, token);
-                }, 900);
+                setSplashData({ user: userResp, token });
+                setShowSplash(true);
             } else {
                 setMessage('Erro: Resposta da API inválida.');
                 setLoading(false);
@@ -448,83 +543,77 @@ const LoginPage = () => {
         }
     };
 
+    const handleSplashComplete = () => {
+        if (splashData) {
+            login(splashData.user, splashData.token);
+        }
+    };
+
     return (
-        <LoginContainer>
-            <AmbientLayer>
-                <AmbientOrb />
-                <AmbientOrb />
-                <AmbientOrb />
-            </AmbientLayer>
-            <LoginBox>
-                {loading && (
-                    <LoadingOverlay>
-                        {successAnimation ? (
-                            <SuccessWrapper>
-                                <FiCheckCircle />
-                                <span>Bem-vindo(a)!</span>
-                            </SuccessWrapper>
-                        ) : (
-                            <>
-                                <Spinner />
-                                <OverlayText>Validando credenciais...</OverlayText>
-                            </>
-                        )}
-                    </LoadingOverlay>
-                )}
-                <LogoImage src={logo} alt="Logo da Empresa" />
-                <Description>
-                    Acesse seu painel com segurança. Por favor, insira seu e-mail e senha.
-                </Description>
-                <LoginForm onSubmit={handleLogin}>
-                    <FormGroup>
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" autoComplete="email" placeholder="seu@exemplo.com" value={email} onChange={e => setEmail(e.target.value)} required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label htmlFor="password">Senha</Label>
-                        <div style={{ position: 'relative' }}>
-                            <Input
-                                id="password"
-                                type={showPassword ? 'text' : 'password'}
-                                autoComplete="current-password"
-                                placeholder="********"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                required
-                                style={{ paddingRight: '44px' }}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword((v) => !v)}
-                                style={{
-                                    position: 'absolute',
-                                    right: 8,
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    background: 'none',
-                                    border: 'none',
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: 22,
-                                    padding: 0,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}
-                                tabIndex={-1}
-                                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                            >
-                                {showPassword ? <FiEyeOff /> : <FiEye />}
-                            </button>
-                        </div>
-                    </FormGroup>
-                    <Button type="submit" disabled={loading}>
-                        {loading ? 'Entrando...' : 'Entrar'}
-                    </Button>
-                </LoginForm>
-                {message && <Message type={message.toLowerCase().includes('inválid') || message.toLowerCase().includes('erro') ? 'error' : 'success'}>{message}</Message>}
-            </LoginBox>
-        </LoginContainer>
+        <>
+            {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+            <LoginContainer className={showSplash ? 'blur-fade' : ''}>
+                <AmbientLayer>
+                    <AmbientOrb />
+                    <AmbientOrb />
+                    <AmbientOrb />
+                </AmbientLayer>
+                <LoginBox>
+                    {loading && (
+                        <LoadingOverlay>
+                            {successAnimation ? (
+                                <SuccessWrapper>
+                                    <FiCheckCircle />
+                                    <span>Bem-vindo(a)!</span>
+                                </SuccessWrapper>
+                            ) : (
+                                <>
+                                    <Spinner />
+                                    <OverlayText>Validando credenciais...</OverlayText>
+                                </>
+                            )}
+                        </LoadingOverlay>
+                    )}
+                    <LogoImage src={logo} alt="Logo da Empresa" />
+                    <Description>
+                        Acesse seu painel com segurança. Por favor, insira seu e-mail e senha.
+                    </Description>
+                    <LoginForm onSubmit={handleLogin}>
+                        <FormGroup>
+                            <Label htmlFor="email">Email</Label>
+                            <Input id="email" type="email" autoComplete="email" placeholder="seu@exemplo.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="password">Senha</Label>
+                            <div style={{ position: 'relative' }}>
+                                <Input
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    autoComplete="current-password"
+                                    placeholder="********"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    required
+                                    style={{ paddingRight: '44px' }}
+                                />
+                                <PasswordToggle
+                                    type="button"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    tabIndex={-1}
+                                    aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                                >
+                                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                                </PasswordToggle>
+                            </div>
+                        </FormGroup>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? 'Entrando...' : 'Entrar'}
+                        </Button>
+                    </LoginForm>
+                    {message && <Message type={message.toLowerCase().includes('inválid') || message.toLowerCase().includes('erro') ? 'error' : 'success'}>{message}</Message>}
+                </LoginBox>
+            </LoginContainer>
+        </>
     );
 };
 

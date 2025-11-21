@@ -1,0 +1,128 @@
+/* ═══════════════════════════════════════════════════════════
+   SPLASH SCREEN - TELA DE TRANSIÇÃO APÓS LOGIN
+   ═══════════════════════════════════════════════════════════ */
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGO - ANIMAÇÃO BOUNCE IN
+   ═══════════════════════════════════════════════════════════ */
+
+.splash-logo {
+  width: 200px;
+  height: auto;
+  display: block;
+  animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+  will-change: transform, opacity;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-150px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) translateY(10px);
+  }
+  70% {
+    transform: scale(0.9) translateY(-5px);
+  }
+  85% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADER DOTS - 3 BOLINHAS DOURADAS PULSANTES
+   ═══════════════════════════════════════════════════════════ */
+
+.loader-dots {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  animation: dotBounce 1.4s infinite ease-in-out;
+}
+
+.loader-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loader-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loader-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .splash-logo {
+    width: 150px;
+  }
+
+  .splash-content {
+    gap: 30px;
+  }
+
+  .loader-dots {
+    gap: 10px;
+  }
+
+  .loader-dots span {
+    width: 10px;
+    height: 10px;
+  }
+}

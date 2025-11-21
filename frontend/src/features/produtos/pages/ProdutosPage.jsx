@@ -276,15 +276,69 @@ const CardsGrid = styled.div`
   grid-template-columns: 1fr;
 `;
 
+// Helper functions for media URLs (copied from ProductCard.jsx)
+const STORAGE_BASE_URL = import.meta.env.VITE_STORAGE_BASE_URL || '/storage';
+const PUBLIC_IMAGE_BASE = import.meta.env.VITE_PUBLIC_IMAGE_BASE || '/images';
+
+const buildUrl = (base, path) => {
+  const normalizedBase = String(base || '').replace(/\/$/, '');
+  const normalizedPath = String(path || '').replace(/^\/+/, '');
+  return `${normalizedBase}/${normalizedPath}`;
+};
+
+function resolveMediaUrl(raw, productId) {
+  if (!raw) return null;
+  if (typeof raw !== 'string') return null;
+  let v = raw.trim();
+  v = v.replace(/\\+/g, '/');
+  const lower = v.toLowerCase();
+
+  if (/^https?:\/\//i.test(v)) return v;
+  if (v.startsWith('/')) return v;
+  if (lower.startsWith('images/')) {
+    const relative = v.replace(/^images\//i, '');
+    return buildUrl(PUBLIC_IMAGE_BASE, relative);
+  }
+  const imagesIdx = lower.indexOf('/images/');
+  if (imagesIdx >= 0) {
+    const relative = v.slice(imagesIdx + '/images/'.length);
+    return buildUrl(PUBLIC_IMAGE_BASE, relative);
+  }
+  if (lower.startsWith('/images/')) return v;
+  if (lower.startsWith('/storage/')) {
+    return buildUrl(STORAGE_BASE_URL, v.replace(/^\/storage\//i, ''));
+  }
+  if (lower.startsWith('storage/')) {
+    return buildUrl(STORAGE_BASE_URL, v.replace(/^storage\//i, ''));
+  }
+  const storageIdx = lower.indexOf('/storage/');
+  if (storageIdx >= 0) {
+    const relative = v.slice(storageIdx + '/storage/'.length);
+    return buildUrl(STORAGE_BASE_URL, relative);
+  }
+  if (!v.includes('/') && productId) {
+    return buildUrl(PUBLIC_IMAGE_BASE, `${String(productId).trim()}/${v}`);
+  }
+  return buildUrl(STORAGE_BASE_URL, v);
+}
+
 const ProdutoCard = ({ product, onDelete }) => {
   const handleEdit = () => {
-    // navegação para edição se necessário
     window.location.href = `/produtos/${product.id}/editar`;
   };
+
+  const imageUrl = resolveMediaUrl(
+    product.image_url || product.image || product.photo_url || product.thumbnail_url,
+    product.id
+  );
+
   return (
     <ProdutoCardWrapper>
       <CardHeader>
-        {product.name || product.title || 'Produto'}
+        {imageUrl && (
+          <ProductImage src={imageUrl} alt={product.name || 'Produto'} loading="lazy" />
+        )}
+        <ProductName>{product.name || product.title || 'Produto'}</ProductName>
       </CardHeader>
       <CardBody>
         <CardField>
@@ -319,23 +373,66 @@ const ProdutoCardWrapper = styled.div`
   background: #071124;
   border: 1px solid rgba(255,255,255,0.03);
 `;
+
 const CardHeader = styled.div`
   background: linear-gradient(90deg,#06b6d4 0%, #3b82f6 100%);
   padding: 16px;
   color: #fff;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 80px;
 `;
+
+const ProductImage = styled.img`
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+`;
+
+const ProductName = styled.div`
+  font-weight: 700;
+  font-size: 16px;
+  flex: 1;
+  line-height: 1.3;
+`;
+
 const CardBody = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
+
 const CardField = styled.div`
   small { color: #94a3b8; font-size: 12px; }
   div { color: #e5e7eb; font-size: 15px; font-weight: 700; }
 `;
+
 const CardActions = styled.div`
   display:flex; gap:8px; margin-top:16px;
-  button{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; }
+  button{
+    padding:10px 16px;
+    border-radius:8px;
+    border:0;
+    cursor:pointer;
+    background: #9dd9d2;
+    color: #000;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    &:hover {
+      background: #86c7bf;
+      transform: translateY(-1px);
+    }
+    &:last-child {
+      background: #ef4444;
+      color: #fff;
+      &:hover {
+        background: #dc2626;
+      }
+    }
+  }
 `;
