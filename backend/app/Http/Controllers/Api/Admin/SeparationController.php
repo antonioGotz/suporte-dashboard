@@ -822,11 +822,14 @@ class SeparationController extends Controller
     public function show($id)
     {
         // Busca o pedido com os relacionamentos necessários para o frontend
-        $order = Order::with(['user', 'products'])->find($id);
+        $order = Order::with(['user', 'product'])->find($id);
 
         if (!$order) {
             return response()->json(['message' => 'Pedido não encontrado'], 404);
         }
+
+        // Verifica autorização
+        $this->authorize('view', $order);
 
         return response()->json($order);
     }
