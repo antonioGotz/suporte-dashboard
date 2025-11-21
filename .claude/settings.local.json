@@ -4,7 +4,12 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(ssh deploy@72.61.51.111 \"sudo docker ps -a && echo ''---COMPOSE---'' && sudo docker-compose ps 2>/dev/null || echo ''Docker Compose não encontrado neste diretório''\")",
+      "Bash(ssh deploy@72.61.51.111 \"sudo cat /var/www/aevolua/.env | grep -E ''(DB_|APP_URL|FRONTEND_URL)''\")",
+      "Bash(ssh deploy@72.61.51.111 \"sudo tail -100 /var/www/aevolua/storage/logs/laravel.log | grep -A 20 ''SQLSTATE\\|Exception\\|Error'' | tail -50\")",
+      "Bash(ssh:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
