@@ -10,6 +10,18 @@ export default function TimelineViewItem({ item, statusPipeline, stageByCode, cl
     ? STATUS_PIPELINE.filter(s => !('isFallback' in s))
     : (Array.isArray(statusPipeline) ? statusPipeline.filter(s=>!('isFallback' in s)) : []);
 
+  // Helper para garantir data válida (YYYY-MM-DD) ou null
+  const getSafeYMD = (dateVal) => {
+    if (!dateVal) return null;
+    try {
+      const d = new Date(dateVal);
+      if (Number.isNaN(d.getTime())) return null;
+      return d.toISOString().split('T')[0];
+    } catch (e) {
+      return null;
+    }
+  };
+
   const stageCode = item.status_code || item.status;
   // lookup with fallback
   let stage = stageCode ? stageByCode[stageCode] : undefined;
@@ -21,14 +33,19 @@ export default function TimelineViewItem({ item, statusPipeline, stageByCode, cl
     }
   }
   const pct = percentFor(stageCode, canonicalStages);
-  const sla = classifySLA(item.next_shipment_date ? new Date(item.next_shipment_date).toISOString().split('T')[0] : null);
+
+  // Usa helper seguro para evitar crash com datas inválidas
+  const safeYMD = getSafeYMD(item.next_shipment_date);
+  const sla = classifySLA(safeYMD);
+
   const slaText = (() => {
-    const ymd = item.next_shipment_date ? new Date(item.next_shipment_date).toISOString().split('T')[0] : null;
-    if (!ymd) return '';
+    if (!safeYMD) return '';
     const today = new Date();
     today.setHours(0,0,0,0);
     try {
-      const d = new Date(String(ymd) + 'T00:00:00');
+      const d = new Date(safeYMD + 'T00:00:00');
+      if (Number.isNaN(d.getTime())) return '';
+
       const diff = Math.ceil((d - today) / (24 * 60 * 60 * 1000));
       if (Number.isNaN(diff)) return '';
       if (diff < 0) return 'Prazo encerrado';
