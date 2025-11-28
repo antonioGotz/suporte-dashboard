@@ -39,7 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
 
-        $middleware->appendToGroup('api', VerifyCsrfToken::class);
+        // REMOVIDO: VerifyCsrfToken não deve ser usado em APIs REST
+        // APIs usam tokens (Sanctum) para autenticação, não CSRF
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // --- TRATAMENTO DE ERROS PARA A API ---
