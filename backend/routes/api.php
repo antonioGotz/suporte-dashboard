@@ -123,6 +123,8 @@ Route::prefix('admin')
 
         // Separações
         Route::get('/separation', [SeparationController::class, 'index']);
+        Route::get('/separation/{order}', [SeparationController::class, 'show'])
+            ->whereNumber('order');
         Route::match(['put', 'patch'], '/separation/{order}', [SeparationController::class, 'updateStatus'])
             ->whereNumber('order');
         Route::post('/orders/{order}/shipping/label', [SeparationController::class, 'generateLabel'])
